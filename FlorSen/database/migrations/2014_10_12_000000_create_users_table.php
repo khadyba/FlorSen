@@ -15,13 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('prenom');
             $table->string('nom');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('adresse');
             $table->string('telephone');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role',['admin','jardinier','utilisateur'])->default('utilisateur');
+            $table->enum('role',['admin','jardinier','clients'])->default('clients');
+            $table->boolean('is_bloquer')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

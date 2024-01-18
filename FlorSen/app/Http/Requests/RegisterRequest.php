@@ -47,4 +47,17 @@ class RegisterRequest extends FormRequest
 }
 
 
+        // fonction pour traduire les message d'ereur en francais
+        public function messages()
+        {
+                    return [
+                            'telephone.required'=> 'Veuiller mettre un numéro de telephone valide',   
+                            'prenom.required' =>'Veuillez renseignée votre prenom',  
+                            'nom.required' =>'Veillez renseignée votre nom',
+                            'email.required' =>'une adresse  email doit etre fournie',
+                            'email.unique' =>'l\adresse email existe déjat',
+                            'password.required' =>'Le mot de passe est requis et doit avoir au minimum 7 caractères',
+                    ];
+        }
+
 }
