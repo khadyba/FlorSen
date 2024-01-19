@@ -74,27 +74,15 @@ class UserController extends Controller
  * @return \Illuminate\Http\JsonResponse
  */
     public function listClients()
-    { 
-
-        if ($this->authorize('viewAny', User::class)) {
-            
+    {if ($this->authorize('viewAny', User::class)) {
             $clients = User::where('role', 'clients')->get();
-       
             return response()->json($clients, 200);
         } else {
             return response()->json([
                 'message' => 'Vous n\'êtes pas autorisé à effectuer cette action!',
             ], 403);
         }
-      
-      
     }
-
-
-
-
-
-
 
 
 
@@ -197,7 +185,8 @@ class UserController extends Controller
  *          description="Erreur serveur",
  *          @OA\JsonContent(
  *              @OA\Property(property="status_code", type="integer", example=500),
- *              @OA\Property(property="error", type="string", example="Une erreur s'est produite lors de la mise à jour de l'utilisateur."),
+ *              @OA\Property(property="error", type="string",
+ *               example="Une erreur s'est produite lors de la mise à jour de l'utilisateur."),
  *          ),
  *      ),
  * )

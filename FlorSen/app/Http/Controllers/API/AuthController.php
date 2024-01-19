@@ -40,36 +40,34 @@ class AuthController extends Controller
  *          response=200,
  *          description="Connexion réussie",
  *          @OA\JsonContent(
- *              @OA\Property(property="message", type="string", example="Bienvenue dans votre espace personnel ! Vous êtes connecté en tant que jardinier."),
+ *              @OA\Property(property="message", type="string"
+ *              example="Bienvenue dans votre espace personnel ! Vous êtes connecté en tant que jardinier."),
  *              @OA\Property(property="user", type="object", ref="#/components/schemas/User"),
- *              @OA\Property(property="authorization", type="object", 
- *                  @OA\Property(property="token", type="string", example="your_jwt_token_here"),
- *                  @OA\Property(property="type", type="string", example="bearer"),
+ *              @OA\Property(property="authorization", type="object"
+ *              @OA\Property(property="token", type="string", example="your_jwt_token_here"),
+ *              @OA\Property(property="type", type="string", example="bearer"),
  *              ),
  *          ),
  *      ),
- * 
  *    @OA\JsonContent(
  *              @OA\Property(property="message", type="string", example="Bienvenue dans votre espace Administrateur!"),
  *              @OA\Property(property="user", type="object", ref="#/components/schemas/User"),
  *              @OA\Property(property="authorization", type="object", 
- *                  @OA\Property(property="token", type="string", example="your_jwt_token_here"),
- *                  @OA\Property(property="type", type="string", example="bearer"),
+ *              @OA\Property(property="token", type="string", example="your_jwt_token_here"),
+ *              @OA\Property(property="type", type="string", example="bearer"),
  *              ),
  *          ),
  *      ),
- *       
- *      @OA\JsonContent(
- *              @OA\Property(property="message", type="string", example="Félicitations ! Vous êtes connecté."),
+ *   @OA\JsonContent(
+ *   @OA\Property(property="message", type="string", example="Félicitations ! Vous êtes connecté."),
  *              @OA\Property(property="user", type="object", ref="#/components/schemas/User"),
- *              @OA\Property(property="authorization", type="object", 
+ *              @OA\Property(property="authorization", type="object"
  *                  @OA\Property(property="token", type="string", example="your_jwt_token_here"),
  *                  @OA\Property(property="type", type="string", example="bearer"),
  *              ),
  *          ),
  *      ),
- * 
- *      @OA\Response(
+ *   @OA\Response(
  *          response=401,
  *          description="Non autorisé",
  *          @OA\JsonContent(
@@ -107,6 +105,7 @@ class AuthController extends Controller
                 ]
             ]);
         }elseif($user->role === 'admin'){ 
+            
             return response()->json([
                 'message' => 'Bienvenue dans votre espace Administrateur!',
                 'user' => $user,
@@ -164,7 +163,8 @@ class AuthController extends Controller
  *          description="Erreur serveur",
  *          @OA\JsonContent(
  *              @OA\Property(property="status_code", type="integer", example=500),
- *              @OA\Property(property="error", type="string", example="Une erreur s'est produite lors du traitement de votre demande."),
+ *              @OA\Property(property="error", type="string",
+ *               example="Une erreur s'est produite lors du traitement de votre demande."),
  *          ),
  *      ),
  * )
@@ -182,19 +182,6 @@ public function register(RegisterRequest $request)
         $user->telephone = $request->telephone;
         $user->email = $request->email;
         
-        
-        // if ($request->has('image')) {
-
-           
-        //     // $imageData = $request->image;
-        //     // $imageName = time() . '.jpeg';
-        //     // file_put_contents(public_path('image/' . $imageName), $imageData);
-        //     // $user->image = "image/" . $imageName;
-
-        //     $user->role = 'jardinier';
-        // }
-        
-
 
         $image = $request->file('image');
 
@@ -204,7 +191,6 @@ public function register(RegisterRequest $request)
         }
         // Hachage du mot de passe
         $user->password = bcrypt($request->password);
-        // dd($user);
         $user->save();
 
         return response()->json([
