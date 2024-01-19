@@ -38,5 +38,4 @@ Route::controller(UserController::class)->group(function () {
     Route::get('listClients', 'listClients');
     Route::post('modifierProfil/{id}', 'update');
 
-
 });

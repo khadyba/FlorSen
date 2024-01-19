@@ -175,7 +175,6 @@ class AuthController extends Controller
 public function register(RegisterRequest $request)
 {
     try {
-    
         $user = new User();
         $user->prenom = $request->prenom;
         $user->nom = $request->nom;
