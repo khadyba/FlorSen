@@ -41,9 +41,16 @@ class UserController extends Controller
  */
     public function listJardinier()
     {
-        $jardiniers = User::where('role', 'jardinier')->get();
+        if ($this->authorize('viewAny', User::class)) {
+            $jardiniers = User::where('role', 'jardinier')->get();
 
-        return response()->json($jardiniers, 200);
+            return response()->json($jardiniers, 200);
+        }  else {
+            return response()->json([
+                'message' => 'Vous n\'êtes pas autorisé à effectuer cette action!',
+            ], 403);
+        }
+       
     }
 
    /**
@@ -67,17 +74,15 @@ class UserController extends Controller
  * @return \Illuminate\Http\JsonResponse
  */
     public function listClients()
-    {
-        $clients = User::where('role', 'clients')->get();
-
-        return response()->json($clients, 200);
+    {if ($this->authorize('viewAny', User::class)) {
+            $clients = User::where('role', 'clients')->get();
+            return response()->json($clients, 200);
+        } else {
+            return response()->json([
+                'message' => 'Vous n\'êtes pas autorisé à effectuer cette action!',
+            ], 403);
+        }
     }
-
-
-
-
-
-
 
 
 
@@ -180,16 +185,17 @@ class UserController extends Controller
  *          description="Erreur serveur",
  *          @OA\JsonContent(
  *              @OA\Property(property="status_code", type="integer", example=500),
- *              @OA\Property(property="error", type="string", example="Une erreur s'est produite lors de la mise à jour de l'utilisateur."),
+ *              @OA\Property(property="error", type="string",
+ *               example="Une erreur s'est produite lors de la mise à jour de l'utilisateur."),
  *          ),
  *      ),
  * )
  */
 public function update(Request $request, string $id)
 {
+    $this->authorize('update', User::class);
     try {
         $user = User::findOrFail($id);
-
         $user->prenom = $request->input('prenom', $user->prenom);
         $user->nom = $request->input('nom', $user->nom);
         $user->adresse = $request->input('adresse', $user->adresse);
@@ -286,7 +292,8 @@ public function update(Request $request, string $id)
 
  public function blockUser($id)
 {
-    // dd('ok');
+    $this->authorize('blockUser', User::class);
+
     $user = User::FindOrFail($id);
 
     if (!$user) {
@@ -350,6 +357,7 @@ public function update(Request $request, string $id)
  */
 public function debloquerUser(string $id)
 {
+    $this->authorize('debloquerUser', User::class);
     $user = User::findOrFail($id);
     
     if ($user->role === "jardinier" || $user->role === "clients" && $user->is_bloquer === 1) {
@@ -367,9 +375,6 @@ public function debloquerUser(string $id)
         ]);
     }
 }
-
-
-
 
 
 }

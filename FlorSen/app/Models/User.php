@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Models;
-
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -83,4 +81,18 @@ class User extends  Authenticatable implements JWTSubject
     {
         return [];
     }
+
+
+    public function isAdmin()
+{
+    
+    // Logique pour vérifier si l'utilisateur est un administrateur
+    return $this->role === 'admin';
+}
+
+  public function UserAll()
+  {
+     return $this->role === ['clients','jardinier','admin'];
+  }
+
 }
