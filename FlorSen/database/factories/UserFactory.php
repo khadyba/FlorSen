@@ -1,7 +1,5 @@
 <?php
-
 namespace Database\Factories;
-
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -24,11 +22,16 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'prenom' => fake()->name(),
+            'nom' => fake()->name(),
+            'image'=>('image\/QHRT6PHtAwivXibuTQJjl53HidcEFMcY5uOK9kG4.jpg'),
+            'telephone' => '77-147-45-41',
+            'adresse' => 'dakar',
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'role'=>'admin',
+            'remember_token' => Str::random(10)
         ];
     }
 

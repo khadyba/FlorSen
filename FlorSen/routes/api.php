@@ -1,10 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\API\AuthController;
-
+use App\Http\Controllers\API\ArticleController;
+use App\Http\Controllers\API\CommentaireController;
+use App\Http\Controllers\API\NewlettresController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,26 +18,45 @@ use App\Http\Controllers\API\AuthController;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
-   
-    
+       
 });
-
 
 Route::controller(UserController::class)->group(function () {
-    Route::post('blockUser/{id}', 'blockUser');
-    Route::post('debloquerUser/{id}', 'debloquerUser');
-    Route::get('listJardinier', 'listJardinier');
-    Route::get('listClients', 'listClients');
+    Route::post('blockUser/{id}','blockUser')->middleware('checkadmin');
+    Route::post('debloquerUser/{id}','debloquerUser')->middleware('checkadmin');
+    Route::get('listJardinier','listJardinier')->middleware('checkadmin');
+    Route::get('listClients','listClients')->middleware('checkadmin');
     Route::post('modifierProfil/{id}', 'update');
+});
+
+Route::controller(ArticleController::class)->group(function () {
+    Route::post('createArticle', 'create')->middleware('checkadmin');
+    Route::post('updateArticle/{id}', 'update')->middleware('checkadmin');
+    Route::delete('destroyArticle/{id}', 'destroy')->middleware('checkadmin');
+    Route::get('ListeArticle', 'index');
+    Route::get('VoirDetailArticle/{id}', 'show');
 
 
 });
+
+Route::controller(NewlettresController::class)->group(function (){
+    Route::post('AjouterNewletters', 'store');
+    Route::post('SupprimerNewlettes/{id}', 'supprimer');
+
+});
+
+Route::middleware(['is_connecte'])->group(function () {
+    Route::controller(CommentaireController::class)->group(function (){
+        Route::post('AjouterCommentaire/{article}', 'create');
+        Route::post('ModifierCommentaire/{article}', 'update');
+        Route::delete('SupprimerCommentaire/{commentaire}', 'destroy');
+    });
+});
+

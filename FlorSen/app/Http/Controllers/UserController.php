@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Http\Requests\NewlettersRequest;
+use App\Models\Newletter;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,10 +19,9 @@ class UserController extends Controller
     {
         //
     }
-
  /**
  * @OA\Get(
- *      path="/api/jardiniers",
+ *      path="/api/listJardinier",
  *      operationId="listJardinier",
  *      tags={"User Management"},
  *      summary="Liste des utilisateurs avec le rôle de jardinier",
@@ -41,14 +41,20 @@ class UserController extends Controller
  */
     public function listJardinier()
     {
-        $jardiniers = User::where('role', 'jardinier')->get();
+        if ($this->authorize('viewAny', User::class)) {
+            $jardiniers = User::where('role', 'jardinier')->get();
 
-        return response()->json($jardiniers, 200);
+            return response()->json($jardiniers, 200);
+        }  else {
+            return response()->json([
+                'message' => 'Vous n\'êtes pas autorisé à effectuer cette action!',
+            ], 403);
+        }
+       
     }
-
    /**
  * @OA\Get(
- *      path="/api/clients",
+ *      path="/api/listClients",
  *      operationId="listClients",
  *      tags={"User Management"},
  *      summary="Liste des utilisateurs avec le rôle de client",
@@ -67,31 +73,15 @@ class UserController extends Controller
  * @return \Illuminate\Http\JsonResponse
  */
     public function listClients()
-    {
-        $clients = User::where('role', 'clients')->get();
-
-        return response()->json($clients, 200);
+    {if ($this->authorize('viewAny', User::class)) {
+            $clients = User::where('role', 'clients')->get();
+            return response()->json($clients, 200);
+        } else {
+            return response()->json([
+                'message' => 'Vous n\'êtes pas autorisé à effectuer cette action!',
+            ], 403);
+        }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -105,7 +95,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // 
+        
     }
 
     /**
@@ -131,8 +122,8 @@ class UserController extends Controller
 
 
 /**
- * @OA\Put(
- *      path="/api/users/{id}",
+ * @OA\Post(
+ *      path="/api/modifierProfil/{id}",
  *      operationId="updateUser",
  *      tags={"User Management"},
  *      summary="Mettre à jour un utilisateur",
@@ -148,10 +139,10 @@ class UserController extends Controller
  *      ),
  *      @OA\RequestBody(
  *          required=true,
- *          @OA\JsonContent(
+ *          @OA\multipart/form-data(
  *              @OA\Property(property="prenom", type="string"),
  *              @OA\Property(property="nom", type="string"),
- *              @OA\Property(property="image", type="file", nullable=true),
+ *              @OA\Property(property="image", type="string", format="binary", nullable=true),
  *              @OA\Property(property="adresse", type="string"),
  *              @OA\Property(property="telephone", type="string"),
  *              @OA\Property(property="email", type="string"),
@@ -180,23 +171,24 @@ class UserController extends Controller
  *          description="Erreur serveur",
  *          @OA\JsonContent(
  *              @OA\Property(property="status_code", type="integer", example=500),
- *              @OA\Property(property="error", type="string", example="Une erreur s'est produite lors de la mise à jour de l'utilisateur."),
+ *              @OA\Property(property="error", type="string",
+ *               example="Une erreur s'est produite lors de la mise à jour de l'utilisateur."),
  *          ),
  *      ),
  * )
  */
 public function update(Request $request, string $id)
 {
+    $this->authorize('update', User::class);
     try {
         $user = User::findOrFail($id);
-
         $user->prenom = $request->input('prenom', $user->prenom);
         $user->nom = $request->input('nom', $user->nom);
         $user->adresse = $request->input('adresse', $user->adresse);
         $user->telephone = $request->input('telephone', $user->telephone);
         $user->email = $request->input('email', $user->email);
 
-        $image = $request->file('image');
+        $image = $request->input('image');
 
         if ($image !== null && !$image->getError()) {
             // Supprimer l'ancienne image s'il en existe une
@@ -227,15 +219,6 @@ public function update(Request $request, string $id)
     }
 }
 
-
-
-
-
-
-
-
-
-
     /**
      * Remove the specified resource from storage.
      */
@@ -243,11 +226,9 @@ public function update(Request $request, string $id)
     {
         //
     }
-
-
 /**
  * @OA\Post(
- *      path="/api/user/{id}/block",
+ *      path="/api/blockUser/{id}",
  *      operationId="blockUser",
  *      tags={"User Management"},
  *      summary="Bloquer un utilisateur",
@@ -284,35 +265,31 @@ public function update(Request $request, string $id)
  * @return \Illuminate\Http\JsonResponse
  */
 
- public function blockUser($id)
-{
-    // dd('ok');
-    $user = User::FindOrFail($id);
+    public function blockUser($id)
+    {
+        $this->authorize('blockUser', User::class);
 
-    if (!$user) {
-        return response()->json([
-            'message' => 'Utilisateur non trouvé.',
-        ], 404);
+        $user = User::FindOrFail($id);
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Utilisateur non trouvé.',
+            ], 404);
+        }
+
+        if ($user->role === "jardinier" || $user->role === "clients") {
+            $user->is_bloquer = 1;
+            $user->save();
+
+            return response()->json([
+                "statut" => 1,
+                "Message" => "Utilisateur bloqué avec succès"
+            ]);
+        }
     }
-
-    if ($user->role === "jardinier" || $user->role === "clients") {
-        $user->is_bloquer = 1;
-        $user->save();
-
-        return response()->json([
-            "statut" => 1,
-            "Message" => "Utilisateur bloqué avec succès"
-        ]);
-    }
-}
-
-
-
-
-
   /**
  * @OA\Post(
- *      path="/api/user/{id}/unblock",
+ *      path="/api/debloquerUser/{id}",
  *      operationId="unblockUser",
  *      tags={"User Management"},
  *      summary="Débloquer un utilisateur",
@@ -350,6 +327,7 @@ public function update(Request $request, string $id)
  */
 public function debloquerUser(string $id)
 {
+    $this->authorize('debloquerUser', User::class);
     $user = User::findOrFail($id);
     
     if ($user->role === "jardinier" || $user->role === "clients" && $user->is_bloquer === 1) {
@@ -367,9 +345,4 @@ public function debloquerUser(string $id)
         ]);
     }
 }
-
-
-
-
-
 }
