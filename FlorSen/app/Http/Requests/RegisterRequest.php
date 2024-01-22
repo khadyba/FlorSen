@@ -26,7 +26,7 @@ class RegisterRequest extends FormRequest
         return [
                     'prenom'=>'required',
                     'nom'=>'required',
-                    'adresse'=>'required',  
+                    'adresse'=>'required',
                     'telephone' => [
                           'required',
                          'regex:/^\d{2}-\d{3}-\d{2}-\d{2}$/',
@@ -51,8 +51,8 @@ class RegisterRequest extends FormRequest
         public function messages()
         {
                     return [
-                            'telephone.required'=> 'Veuiller mettre un numéro de telephone valide',   
-                            'prenom.required' =>'Veuillez renseignée votre prenom',  
+                            'telephone.required'=> 'Veuiller mettre un numéro de telephone valide',
+                            'prenom.required' =>'Veuillez renseignée votre prenom',
                             'nom.required' =>'Veillez renseignée votre nom',
                             'email.required' =>'une adresse  email doit etre fournie',
                             'email.unique' =>'l\adresse email existe déjat',

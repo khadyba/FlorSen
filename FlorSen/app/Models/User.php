@@ -95,4 +95,17 @@ class User extends  Authenticatable implements JWTSubject
      return $this->role === ['clients','jardinier','admin'];
   }
 
+
+
+  public function produits()
+  {
+      return $this->hasMany(Produits::class, 'jardinier_id');
+  }
+
+  public function commentaires()
+  {
+      return $this->hasMany(Commentaire::class);
+  }
+
+ 
 }

@@ -42,7 +42,8 @@ class AuthenticationTest extends TestCase
      {
         $user = User::factory()->create([
             'email'=>'admin@example.com',
-            'password'=>bcrypt('password')
+            'password'=>bcrypt('password'),
+            'role'=>'admin'
         ]);
         $token = JWTAuth::fromUser($user);
         
@@ -55,7 +56,8 @@ class AuthenticationTest extends TestCase
        {
         $user = User::factory()->create([
             'email'=>'admin@example.fr',
-            'password'=>bcrypt('password')
+            'password'=>bcrypt('password'),
+            'role'=>'admin'
         ]);
         $token = JWTAuth::fromUser($user);
         $response = $this->withHeader('Authorization', 'Bearer ' . $token)

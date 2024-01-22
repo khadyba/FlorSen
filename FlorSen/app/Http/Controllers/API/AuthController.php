@@ -52,7 +52,7 @@ class AuthController extends Controller
  *    @OA\JsonContent(
  *              @OA\Property(property="message", type="string", example="Bienvenue dans votre espace Administrateur!"),
  *              @OA\Property(property="user", type="object", ref="#/components/schemas/User"),
- *              @OA\Property(property="authorization", type="object", 
+ *              @OA\Property(property="authorization", type="object",
  *              @OA\Property(property="token", type="string", example="your_jwt_token_here"),
  *              @OA\Property(property="type", type="string", example="bearer"),
  *              ),
@@ -77,24 +77,20 @@ class AuthController extends Controller
  * )
  */
 
-    public function login(LoginRequest $request)
+    public function  login(LoginRequest $request)
     {
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-    
         $credentials = $request->only('email', 'password');
         $token = Auth::attempt($credentials);
-    
         if (!$token) {
             return response()->json([
                 'message' => 'Unauthorized',
             ], 401);
         }
-    
         $user = Auth::user();
-    
         if ($user->role === 'jardinier') {
             return response()->json([
                 'message' => 'Bienvenue dans votre espace personnel ! ',
@@ -126,52 +122,7 @@ class AuthController extends Controller
             ]);
         }
     }
-/**
- * @OA\Post(
- *      path="/api/register",
- *      operationId="register",
- *      tags={"Authentication"},
- *      summary="Inscription d'un nouvel utilisateur",
- *      description="Enregistre un nouvel utilisateur avec les informations fournies.",
- *      @OA\RequestBody(
- *          required=true,
- *          @OA\MediaType(
- *              mediaType="multipart/form-data",
- *              @OA\Schema(
- *                  required={"prenom", "nom", "adresse", "telephone", "email", "password", "image"},
- *                  @OA\Property(property="prenom", type="string"),
- *                  @OA\Property(property="nom", type="string"),
- *                  @OA\Property(property="adresse", type="string"),
- *                  @OA\Property(property="telephone", type="string"),
- *                  @OA\Property(property="email", type="string"),
- *                  @OA\Property(property="password", type="string", format="password"),
- *                  @OA\Property(property="image", type="string", format="binary"),
- *              ),
- *          ),
- *      ),
- *      @OA\Response(
- *          response=200,
- *          description="Inscription réussie",
- *          @OA\JsonContent(
- *              @OA\Property(property="status_code", type="integer", example=200),
- *              @OA\Property(property="status_message", type="string", example="Inscription réussie !"),
- *              @OA\Property(property="user", type="object", ref="#/components/schemas/User"),
- *          ),
- *      ),
- *      @OA\Response(
- *          response=500,
- *          description="Erreur serveur",
- *          @OA\JsonContent(
- *              @OA\Property(property="status_code", type="integer", example=500),
- *              @OA\Property(property="error", type="string",
- *               example="Une erreur s'est produite lors du traitement de votre demande."),
- *          ),
- *      ),
- * )
- *
- * @param  \App\Http\Requests\RegisterRequest  $request
- * @return \Illuminate\Http\JsonResponse
- */
+
 public function register(RegisterRequest $request)
 {
     try {
@@ -181,14 +132,22 @@ public function register(RegisterRequest $request)
         $user->adresse = $request->adresse;
         $user->telephone = $request->telephone;
         $user->email = $request->email;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
         
-
-        $image = $request->file('image');
-
-        if ($image !== null && !$image->getError()) {
-            $user->image = $image->store('image', 'public');
-            $user->role = 'jardinier';
+            // Vérifier si le fichier image est valide
+            if ($image->isValid()) {
+                $user->image = $image->store('image', 'public');
+                $user->role = 'jardinier';
+            } else {
+                // Gérer le cas où le fichier image n'est pas valide
+                return response()->json([
+                    'status_code' => 400,
+                    'error' => 'Le fichier image n\'est pas valide.',
+                ], 400);
+            }
         }
+        
         // Hachage du mot de passe
         $user->password = bcrypt($request->password);
         $user->save();
