@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\User;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use App\Mail\NouvelleArticle;
@@ -10,22 +9,59 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\ArticleRequest;
 use App\Models\Newletter;
-use App\Notifications\NewArticleNotification;
-
 class ArticleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+ /**
+ * @OA\Get(
+ *     path="/api/ListeArticle",
+ *     operationId="getArticlesList",
+ *     tags={"Articles"},
+ *     summary="Obtenir la liste des articles",
+ *     description="Retourne la liste des articles",
+ *     @OA\Response(
+ *         response=200,
+ *         description="Opération réussie",
+ *         @OA\JsonContent(ref="#/components/schemas/Article"),
+ *     ),
+ *     security={
+ *         {"bearerAuth": {}}
+ *     }
+ * )
+ */
     public function index()
     {
         $article = Article::where('is_deleted', 0)->get();
         return response()->json($article, 200);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
+/**
+ * @OA\Post(
+ *     path="/api/createArticle",
+ *     operationId="createArticle",
+ *     tags={"Articles"},
+ *     summary="Créer un nouvel article",
+ *     description="Crée un nouvel article avec les détails fournis.",
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/ArticleRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Article créé avec succès",
+ *         @OA\JsonContent(ref="#/components/schemas/Article")
+ *     ),
+ *     @OA\Response(
+ *         response=401,
+ *         description="Non autorisé, utilisateur non authentifié",
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Erreur serveur interne",
+ *     ),
+ *     security={
+ *         {"bearerAuth": {}}
+ *     }
+ * )
+ */
     public function create(ArticleRequest $request)
     {
         $this->authorize('create', Article::class);
@@ -66,9 +102,34 @@ class ArticleController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
+/**
+ * @OA\Get(
+ *     path="/api/VoirDetailArticle/{id}",
+ *     operationId="getArticleById",
+ *     tags={"Articles"},
+ *     summary="Obtenir les détails d'un article",
+ *     description="Récupère les détails d'un article en fonction de l'ID fourni.",
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID de l'article",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Détails de l'article",
+ *         @OA\JsonContent(ref="#/components/schemas/Article")
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Article non trouvé",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Article not found")
+ *         )
+ *     )
+ * )
+ */
     public function show($id)
     {
         $article = Article::find($id);
@@ -87,9 +148,49 @@ class ArticleController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+  
+/**
+ * @OA\Post(
+ *     path="/api/updateArticle/{id}",
+ *     operationId="updateArticle",
+ *     tags={"Articles"},
+ *     summary="Modifier un article",
+ *     description="Modifie un article en fonction de l'ID fourni.",
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID de l'article",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         description="Données de mise à jour de l'article",
+ *         @OA\JsonContent(ref="#/components/schemas/ArticleRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Article modifié avec succès",
+ *         @OA\JsonContent(ref="#/components/schemas/Article")
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Article non trouvé",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Article not found")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Erreur lors de la mise à jour de l'article",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status_code", type="integer", example=500),
+ *             @OA\Property(property="error", type="string",
+ *             example="Une erreur s'est produite lors de la mise à jour de l'Article.")
+ *         )
+ *     )
+ * )
+ */
     public function update(ArticleRequest $request, $id)
     {
         $this->authorize('update', Article::class);
@@ -118,9 +219,53 @@ class ArticleController extends Controller
         
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+   
+/**
+ * @OA\Delete(
+ *     path="/api/destroyArticle/{id}",
+ *     operationId="deleteArticle",
+ *     tags={"Articles"},
+ *     summary="Supprimer un article",
+ *     description="Supprime un article en fonction de l'ID fourni.",
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="ID de l'article",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Article supprimé avec succès",
+ *         @OA\JsonContent(ref="#/components/schemas/Article")
+ *     ),
+ *     @OA\Response(
+ *         response=403,
+ *         description="Accès non autorisé",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status_code", type="integer", example=403),
+ *             @OA\Property(property="error", type="string",
+ *             example="Vous n'êtes pas autorisé à supprimer cet article.")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Article non trouvé",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="message", type="string", example="Article not found")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Erreur lors de la suppression de l'article",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status_code", type="integer", example=500),
+ *             @OA\Property(property="error", type="string",
+ *               example="Une erreur s'est produite lors de la suppression de l'Article.")
+ *         )
+ *     )
+ * )
+ */
     public function destroy(string $id)
     {
         $this->authorize('delete', Article::class);

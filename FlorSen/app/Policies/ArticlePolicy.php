@@ -31,7 +31,9 @@ class ArticlePolicy
     public function create(User $user): Response
     {
         return $user->isAdmin()?
-        Response::allow():Response::deny('Vous n\'êtes pas autorisé à effectuer cette action!');
+        Response::allow():
+        Response::deny('Vous n\'êtes pas autorisé à
+                         effectuer cette action!');
     }
 
     /**
@@ -40,16 +42,20 @@ class ArticlePolicy
     public function update(User $user, Article $article): Response
     {
         return $user->isAdmin()?
-        Response::allow(): Response::deny('Vous n\'êtes pas autorisé à effectuer cette action!');
+        Response::allow(): Response::deny('Vous n\'êtes pas autorisé à
+                                          effectuer cette action!');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Article $article): Response
+    public function delete(User $user): bool
     {
-        return $user->isAdmin()?
-        Response::allow(): Response::deny('Vous n\'êtes pas autorisé à effectuer cette action!');
+        if ($user->isAdmin()) {
+            return true;
+        } else {
+            return Response::deny('Vous n\'êtes pas autorisé à effectuer cette action!');
+        }
     }
 
     /**

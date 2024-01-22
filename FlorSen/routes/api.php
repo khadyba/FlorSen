@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ArticleController;
+use App\Http\Controllers\API\CommentaireController;
 use App\Http\Controllers\API\NewlettresController;
 
 /*
@@ -47,4 +48,15 @@ Route::controller(ArticleController::class)->group(function () {
 
 Route::controller(NewlettresController::class)->group(function (){
     Route::post('AjouterNewletters', 'store');
+    Route::post('SupprimerNewlettes/{id}', 'supprimer');
+
 });
+
+Route::middleware(['is_connecte'])->group(function () {
+    Route::controller(CommentaireController::class)->group(function (){
+        Route::post('AjouterCommentaire/{article}', 'create');
+        Route::post('ModifierCommentaire/{article}', 'update');
+        Route::delete('SupprimerCommentaire/{commentaire}', 'destroy');
+    });
+});
+

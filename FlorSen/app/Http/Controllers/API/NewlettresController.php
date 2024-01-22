@@ -6,6 +6,7 @@ use App\Models\Newletter;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewlettersRequest;
+use Illuminate\Http\Response;
 
 class NewlettresController extends Controller
 {
@@ -25,9 +26,39 @@ class NewlettresController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+   
+/**
+ * @OA\Post(
+ *     path="/api/AjouterNewletters",
+ *     operationId="storeNewsletter",
+ *     tags={"Newsletters"},
+ *     summary="S'inscrire à la newsletter",
+ *     description="Inscription à la newsletter avec l'adresse e-mail fournie.",
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/NewslettersRequest")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Inscription à la newsletter réussie",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status_code", type="integer", example=200),
+ *             @OA\Property(property="status_message",
+ *                type="string", example="Inscription à notre newsletter réussie!"),
+ *             @OA\Property(property="user", ref="#/components/schemas/Newletter")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Erreur lors de l'inscription à la newsletter",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status_code", type="integer", example=500),
+ *             @OA\Property(property="error", type="string",
+ *             example="Une erreur s'est produite lors de l'inscription à la newsletter.")
+ *         )
+ *     )
+ * )
+ */
     public function store(NewlettersRequest $request)
     {
         try {
@@ -71,12 +102,55 @@ class NewlettresController extends Controller
     {
         //
     }
+     
+/**
+ * @OA\Delete(
+ *     path="/api/SupprimerNewlettes/{id}",
+ *     operationId="deleteNewsletter",
+ *     tags={"Newsletters"},
+ *     summary="Suppression de l'inscription à la newsletter",
+ *     description="Suppression de l'inscription à la newsletter à l'aide de l'identifiant fourni.",
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="Identifiant de l'inscription à la newsletter",
+ *         required=true,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Inscription à la newsletter supprimée avec succès",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status", type="integer", example=1),
+ *             @OA\Property(property="message", type="string", example="Email supprimé avec succès")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Inscription à la newsletter non trouvée",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status", type="integer", example=404),
+ *             @OA\Property(property="message", type="string", example="Inscription à la newsletter non trouvée")
+ *         )
+ *     )
+ * )
+ */
+public function supprimer($id)
+{
+    try {
+        $newsletter = Newletter::findOrFail($id);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        if ($newsletter->delete()) {
+            return response()->json([
+                "status" => Response::HTTP_OK,
+                "message" => "Désabonnement Reuissie avec success!"
+            ]);
+        }
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return response()->json([
+            'status' => Response::HTTP_NOT_FOUND,
+            'message' => 'Inscription à la newsletter non trouvée'
+        ], Response::HTTP_NOT_FOUND);
     }
+}
 }

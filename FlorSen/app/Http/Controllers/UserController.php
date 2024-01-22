@@ -19,10 +19,9 @@ class UserController extends Controller
     {
         //
     }
-
  /**
  * @OA\Get(
- *      path="/api/jardiniers",
+ *      path="/api/listJardinier",
  *      operationId="listJardinier",
  *      tags={"User Management"},
  *      summary="Liste des utilisateurs avec le rôle de jardinier",
@@ -53,10 +52,9 @@ class UserController extends Controller
         }
        
     }
-
    /**
  * @OA\Get(
- *      path="/api/clients",
+ *      path="/api/listClients",
  *      operationId="listClients",
  *      tags={"User Management"},
  *      summary="Liste des utilisateurs avec le rôle de client",
@@ -84,20 +82,6 @@ class UserController extends Controller
             ], 403);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -138,8 +122,8 @@ class UserController extends Controller
 
 
 /**
- * @OA\Put(
- *      path="/api/users/{id}",
+ * @OA\Post(
+ *      path="/api/modifierProfil/{id}",
  *      operationId="updateUser",
  *      tags={"User Management"},
  *      summary="Mettre à jour un utilisateur",
@@ -155,10 +139,10 @@ class UserController extends Controller
  *      ),
  *      @OA\RequestBody(
  *          required=true,
- *          @OA\JsonContent(
+ *          @OA\multipart/form-data(
  *              @OA\Property(property="prenom", type="string"),
  *              @OA\Property(property="nom", type="string"),
- *              @OA\Property(property="image", type="file", nullable=true),
+ *              @OA\Property(property="image", type="string", format="binary", nullable=true),
  *              @OA\Property(property="adresse", type="string"),
  *              @OA\Property(property="telephone", type="string"),
  *              @OA\Property(property="email", type="string"),
@@ -204,7 +188,7 @@ public function update(Request $request, string $id)
         $user->telephone = $request->input('telephone', $user->telephone);
         $user->email = $request->input('email', $user->email);
 
-        $image = $request->file('image');
+        $image = $request->input('image');
 
         if ($image !== null && !$image->getError()) {
             // Supprimer l'ancienne image s'il en existe une
@@ -235,15 +219,6 @@ public function update(Request $request, string $id)
     }
 }
 
-
-
-
-
-
-
-
-
-
     /**
      * Remove the specified resource from storage.
      */
@@ -251,11 +226,9 @@ public function update(Request $request, string $id)
     {
         //
     }
-
-
 /**
  * @OA\Post(
- *      path="/api/user/{id}/block",
+ *      path="/api/blockUser/{id}",
  *      operationId="blockUser",
  *      tags={"User Management"},
  *      summary="Bloquer un utilisateur",
@@ -292,36 +265,31 @@ public function update(Request $request, string $id)
  * @return \Illuminate\Http\JsonResponse
  */
 
- public function blockUser($id)
-{
-    $this->authorize('blockUser', User::class);
+    public function blockUser($id)
+    {
+        $this->authorize('blockUser', User::class);
 
-    $user = User::FindOrFail($id);
+        $user = User::FindOrFail($id);
 
-    if (!$user) {
-        return response()->json([
-            'message' => 'Utilisateur non trouvé.',
-        ], 404);
+        if (!$user) {
+            return response()->json([
+                'message' => 'Utilisateur non trouvé.',
+            ], 404);
+        }
+
+        if ($user->role === "jardinier" || $user->role === "clients") {
+            $user->is_bloquer = 1;
+            $user->save();
+
+            return response()->json([
+                "statut" => 1,
+                "Message" => "Utilisateur bloqué avec succès"
+            ]);
+        }
     }
-
-    if ($user->role === "jardinier" || $user->role === "clients") {
-        $user->is_bloquer = 1;
-        $user->save();
-
-        return response()->json([
-            "statut" => 1,
-            "Message" => "Utilisateur bloqué avec succès"
-        ]);
-    }
-}
-
-
-
-
-
   /**
  * @OA\Post(
- *      path="/api/user/{id}/unblock",
+ *      path="/api/debloquerUser/{id}",
  *      operationId="unblockUser",
  *      tags={"User Management"},
  *      summary="Débloquer un utilisateur",
@@ -377,6 +345,4 @@ public function debloquerUser(string $id)
         ]);
     }
 }
-
-
 }

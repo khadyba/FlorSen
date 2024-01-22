@@ -23,7 +23,311 @@
         "application/json"
     ],
     "paths": {
-        "/api/update": {
+        "/api/SupprimerCommentaire/1": {
+            "delete": {
+                "summary": "SupprimerCommentaire",
+                "description": "",
+                "responses": {
+                    "204": {
+                        "description": "Deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Commentaires"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/api/ModifierCommentaire/2": {
+            "post": {
+                "summary": "ModifierCommentaire",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Commentaires"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "contenue": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "contenue": "astuce tres  utilise! "
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/AjouterCommentaire/20": {
+            "post": {
+                "summary": "AjouterCommentaire",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Commentaires"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "contenue": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "contenue": "article tres enrichissant!"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/SupprimerNewlettes/2": {
+            "post": {
+                "summary": "SeDésabonner",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Newletters"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/api/AjouterNewletters": {
+            "post": {
+                "summary": "AjouterNewletters",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Newletters"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/api/VoirDetailArticle/22": {
+            "get": {
+                "summary": "VoirDetailArticle",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Article"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/api/ListeArticle": {
+            "get": {
+                "summary": "ListeArticle",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Article"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/api/destroyArticle/1": {
+            "delete": {
+                "summary": "SupprimerArticle",
+                "description": "",
+                "responses": {
+                    "204": {
+                        "description": "Deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Article"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/api/updateArticle/1": {
+            "post": {
+                "summary": "ModifierArticle",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Article"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/api/createArticle": {
+            "post": {
+                "summary": "AjouterArticle",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Article"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/api/modifierProfil/1": {
             "post": {
                 "summary": "ModifierProfile",
                 "description": "",
@@ -50,7 +354,34 @@
                 ]
             }
         },
-        "": {
+        "/api/debloquerUser/1": {
+            "post": {
+                "summary": "DebloquerUser",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/api/blockUser/1": {
             "post": {
                 "summary": "BloquerUser",
                 "description": "",
@@ -240,12 +571,12 @@
                                 }
                             },
                             "example": {
-                                "prenom": "Astou",
-                                "nom": "Ngome",
-                                "image": "https://img.freepik.com/photos-gratuite/guy-jardinier-africain-jardinier-arrosoir-parterres-fleurs_1157-47070.jpg",
+                                "prenom": "awa",
+                                "nom": "Ba",
+                                "image": "https://img.freepik.com/photos-gratuite/vue-belle-fleur-rose-fleurs_23-2150719009.jpg",
                                 "adresse": "dakar",
-                                "telephone": "77-455-22-14",
-                                "email": "mountaga889@gmail.fr",
+                                "telephone": "78-127-45-12",
+                                "email": "aboubacarleye34@gmail.com",
                                 "password": "1234567"
                             }
                         }
@@ -293,8 +624,8 @@
                                 }
                             },
                             "example": {
-                                "email": "khady@email.fr",
-                                "password": "1234567"
+                                "email": "bak92147@gmail.com",
+                                "password": "12345678"
                             }
                         }
                     }

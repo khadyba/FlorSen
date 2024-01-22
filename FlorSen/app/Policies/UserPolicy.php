@@ -13,7 +13,8 @@ class UserPolicy
     public function viewAny(User $user): Response
     {
         return $user->isAdmin()?
-        Response::allow(): Response::deny('Vous n\'êtes pas autorisé à effectuer cette action!');
+        Response::allow(): Response::deny('Vous n\'êtes pas autorisé à
+                                           effectuer cette action!');
       
     }
 
@@ -24,7 +25,8 @@ class UserPolicy
     {
         
         return $user->isAdmin()?
-        Response::allow(): Response::deny('Vous n\'êtes pas autorisé à effectuer cette action!');
+        Response::allow(): Response::deny('Vous n\'êtes pas autorisé à
+                                            effectuer cette action!');
 
 
     }
@@ -35,7 +37,8 @@ class UserPolicy
     public function create(User $user): Response
     {
         return $user->role === 'jardinier' || $user->role === 'clients'|| $user->role === 'admi'?
-        Response::allow(): Response::deny('Vous n\'êtes pas autorisé à effectuer cette action!')
+        Response::allow(): Response::deny('Vous n\'êtes pas autorisé à
+                                         effectuer cette action!')
         ;
     }
 
@@ -45,7 +48,8 @@ class UserPolicy
     public function update(User $user): Response
     {
         return $user->role === 'jardinier' || $user->role === 'clients'|| $user->role === 'admi'?
-        Response::allow(): Response::deny('Vous n\'êtes pas autorisé à effectuer cette action!')
+        Response::allow(): Response::deny('Vous n\'êtes pas autorisé à
+                                              effectuer cette action!')
         ;
       
     }
