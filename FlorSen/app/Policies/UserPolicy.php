@@ -13,8 +13,7 @@ class UserPolicy
     public function viewAny(User $user): Response
     {
         return $user->isAdmin()?
-        Response::allow(): Response::deny('Vous n\'êtes pas autorisé à effectuer cette action!')
-        ;
+        Response::allow(): Response::deny('Vous n\'êtes pas autorisé à effectuer cette action!');
       
     }
 

@@ -31,7 +31,7 @@ class LoginRequest extends FormRequest
   }
 
 
-public function failedValidation(Validator $validator){
+      public function failedValidation(Validator $validator){
       throw new HttpResponseException( response()->json([
          'success'=>false,
          'status_code'=>422,
@@ -42,17 +42,16 @@ public function failedValidation(Validator $validator){
 }
 
 
-// fonction pour traduire les message d'ereur en francais
+
 public function messages()
 {
            return [
                'email.required' =>'une adresse  email doit etre fournie!',
                'email.exists'=> 'Cette adresses email n\'existe pas !',
                'email.email' =>'Adresse  email non valide!',
-
                'password.required' =>'mot de passe non fournis!'
               
-           ];
+     ];
 }
 
 
