@@ -28,6 +28,7 @@ class ProduitsController extends Controller
     {
         
         try {
+            $this->authorize('create', Produits::class);
             $user = Auth::user();
             $produits = new Produits();
             $produits->nom = $request->nom;
@@ -78,16 +79,25 @@ class ProduitsController extends Controller
      */
         public function edit(string $id)
     {
-        $produits = Produits::with(['user' => function ($query) {
-            $query->select('id', 'prenom','nom');
-        }, 'categorie'])->find($id);
-    
-        if ($produits) {
-            return response()->json(['article' => $produits]);
-        } else {
-            return response()->json(['message' => 'Article not found'], 404);
+        try {
+            $produits = Produits::with(['user' => function ($query) {
+                $query->select('id', 'prenom','nom');
+            }, 'categorie'])->find($id);
+        
+            if ($produits) {
+                return response()->json(['article' => $produits]);
+            } else {
+                return response()->json(['message' => 'Article not found'], 404);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status_code' => 500,
+                'error' => 'Une erreur s\'est produite lors du téléchargement',
+            ], 500);
         }
     }
+       
+    
 
     /**
      * Update the specified resource in storage.
@@ -95,7 +105,8 @@ class ProduitsController extends Controller
     public function update(ProduitsRequest $request, string $id)
     {
         try {
-            $produits = Produits::findOrFail($id);
+         $this->authorize('update', Produits::class);
+         $produits = Produits::findOrFail($id);
         $user = Auth::user();
         if ($user->id !== $produits->user_id) {
             return response()->json([
@@ -134,6 +145,7 @@ class ProduitsController extends Controller
     public function destroy(string $id)
     {
         try {
+        $this->authorize('delete', Produits::class);
             $produits= Produits::FindOrFail($id);
             $user = Auth::user();
             if ($user->id !== $produits->user_id) {
@@ -160,7 +172,7 @@ class ProduitsController extends Controller
 
     public function  retirer(string $id){
         try {
-            
+        $this->authorize('retirer', Produits::class);
             $produits= Produits::FindOrFail($id);
             $user = Auth::user();
             if ($user->id !== $produits->user_id) {

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\User;
 use App\Models\Article;
+use App\Models\Produits;
 use App\Models\Commentaire;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -105,7 +107,23 @@ class CommentaireController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $produits = Produits::with(['user' => function ($query) {
+                $query->select('id', 'prenom','nom');
+            }, 'categorie'])->find($id);
+        
+            if ($produits) {
+                return response()->json(['article' => $produits]);
+            } else {
+                return response()->json(['message' => 'Article not found'], 404);
+            }
+        }  catch(\Exception $e) {
+            return response()->json([
+                'status_code' => 500,
+                'error' => 'Une erreur s\'est produite lors du téléchargement',
+            ], 500);
+        }
+        
     }
 
     /**
@@ -113,11 +131,26 @@ class CommentaireController extends Controller
      */
     public function edit(string $id)
     {
-        
-    //
-
+        try {
+            $user = User::where('id', $id)
+            ->where('role', 'jardinier')
+            ->select('id', 'prenom', 'nom', 'telephone')
+            ->first();
+    
+        if ($user) {
+            return response()->json(['user' => $user]);
+        } else {
+            return response()->json(['message' => 'Utilisateur n\'existe !'], 404);
+        }
+        }catch(\Exception $e) {
+            return response()->json([
+                'status_code' => 500,
+                'error' => 'Une erreur s\'est produite lors du téléchargement',
+            ], 500);
+        }
+       
     }
-
+    
   
 /**
  * @OA\Post(

@@ -28,4 +28,9 @@ class Produits extends Model
     {
         return $this->belongsTo(Categories::class,'categories_id');
     }
+
+    public function isJardinier()
+    {
+        return $this->role === 'jardinier';
+    }
 }
