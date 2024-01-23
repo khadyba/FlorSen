@@ -19,8 +19,13 @@ class Produits extends Model
         'categories_id'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function categorie()
     {
-        return $this->belongsTo(Categories::class);
+        return $this->belongsTo(Categories::class,'categories_id');
     }
 }
