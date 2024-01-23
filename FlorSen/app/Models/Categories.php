@@ -16,4 +16,6 @@ class Categories extends Model
     {
         return $this->hasMany(Produits::class);
     }
+
+    
 }

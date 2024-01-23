@@ -20,8 +20,6 @@ class AuthController extends Controller
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
-
-
 /**
  * @OA\Post(
  *      path="/api/login",
@@ -101,7 +99,6 @@ class AuthController extends Controller
                 ]
             ]);
         }elseif($user->role === 'admin'){ 
-            
             return response()->json([
                 'message' => 'Bienvenue dans votre espace Administrateur!',
                 'user' => $user,
@@ -123,6 +120,51 @@ class AuthController extends Controller
         }
     }
 
+    /**
+ * @OA\Post(
+ *     path="/api/register",
+ *     summary="Inscription d'un nouvel utilisateur",
+ *     description="Enregistre un nouvel utilisateur avec les informations fournies.",
+ *     tags={"User"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\MediaType(
+ *             mediaType="multipart/form-data",
+ *             @OA\Schema(
+ *                 required={"prenom", "nom", "adresse", "telephone", "email", "password", "image"},
+ *                 @OA\Property(property="prenom", type="string"),
+ *                 @OA\Property(property="nom", type="string"),
+ *                 @OA\Property(property="adresse", type="string"),
+ *                 @OA\Property(property="telephone", type="string"),
+ *                 @OA\Property(property="email", type="string"),
+ *                 @OA\Property(property="password", type="string", format="password"),
+ *                 @OA\Property(property="image", type="string", format="binary", nullable=true),
+ *             ),
+ *         ),
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Inscription réussie",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status_code", type="integer", example=200),
+ *             @OA\Property(property="status_message", type="string", example="Inscription réussie !"),
+ *             @OA\Property(property="user", type="object", ref="#/components/schemas/User"),
+ *         ),
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Erreur serveur",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status_code", type="integer", example=500),
+ *             @OA\Property(property="error", type="string",
+ *              example="Une erreur s'est produite lors du traitement de votre demande."),
+ *         ),
+ *     ),
+ * )
+ *
+ * @param  \App\Http\Requests\RegisterRequest  $request
+ * @return \Illuminate\Http\JsonResponse
+ */
 public function register(RegisterRequest $request)
 {
     try {

@@ -19,8 +19,8 @@ class AdminSeeder extends Seeder
         $admin->adresse = 'Adresse Admin';
         $admin->telephone = '77-124-44-10';
         $admin->email = 'admin@example.com';
-        $admin->password = bcrypt('password'); // Assurez-vous de choisir un mot de passe sécurisé
-        $admin->role = 'admin'; // Le rôle d'administrateur
+        $admin->password = bcrypt('password');
+        $admin->role = 'admin';
         $admin->save();
     }
 }

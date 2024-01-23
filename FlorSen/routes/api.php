@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ArticleController;
+use App\Http\Controllers\API\CategoriesController;
 use App\Http\Controllers\API\CommentaireController;
 use App\Http\Controllers\API\NewlettresController;
+use App\Http\Controllers\API\ProduitsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,3 +62,21 @@ Route::middleware(['is_connecte'])->group(function () {
     });
 });
 
+Route::middleware(['is_jardinier'])->group(function () {
+    Route::controller(ProduitsController::class)->group(function (){
+        Route::post('PublierProduits', 'create');
+        Route::post('VoirDetailProduits', 'show');
+        Route::post('ModifierProduits/{produits}', 'update');
+        Route::delete('SupprimerProduits/{produits}', 'destroy');
+        Route::delete('RetirerProduits/{produits}', 'retirer');
+        Route::get('ListerProduits','index');
+        Route::get('VoirDetailProduits/{produits}','edit');
+    });
+});
+
+Route::middleware(['is_jardinier'])->group(function (){
+    Route::controller(CategoriesController::class)->group(function (){
+        Route::put('ModifierCategorie/{id}', 'update');
+        Route::post('AjouterCategorie', 'store');
+    });
+});
