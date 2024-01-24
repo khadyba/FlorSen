@@ -145,30 +145,36 @@ class ProduitsController extends Controller
     public function destroy(string $id)
     {
         try {
-        $this->authorize('delete', Produits::class);
-            $produits= Produits::FindOrFail($id);
+            $this->authorize('delete', Produits::class);
+    
+            $produits = Produits::findOrFail($id);
             $user = Auth::user();
+    
             if ($user->id !== $produits->user_id) {
                 return response()->json([
                     'status_code' => 401,
                     'error' => 'Vous n\'êtes pas autorisé à supprimer ce produit.',
                 ], 401);
             }
-             $produits->is_deleted=0;
-                $produits->is_deleted=1;
-                $produits->save();
-                return response()->json([
-                    "status" => 1,
-                    "message" => "L'produits a été supprimer avec succès!",
-                    "data" => $produits
-                     ]);
+    
+            // Marquer le produit comme supprimé
+            $produits->is_deleted = 1;
+            $produits->save();
+    
+            return response()->json([
+                'status' => 1,
+                'message' => 'Le produit a été supprimé avec succès!',
+                'data' => $produits,
+            ]);
         } catch (\Exception $e) {
+            // dd($e->getMessage());
             return response()->json([
                 'status_code' => 500,
-                'error' => 'Une erreur s\'est produite lors de la suppression du produits',
+                'error' => 'Une erreur s\'est produite lors de la suppression du produit',
             ], 500);
         }
     }
+    
 
     public function  retirer(string $id){
         try {

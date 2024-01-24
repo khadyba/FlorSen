@@ -2,23 +2,41 @@
 
 namespace App\Http\Controllers\API;
 
+use Exception;
 use App\Models\User;
 use App\Models\Article;
 use App\Models\Produits;
 use App\Models\Commentaire;
 use Illuminate\Http\Request;
+use App\Mail\ProfilConsulter;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\CommentaireRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CommentaireController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function contacter(string $id)
     {
-        //
+        try {
+            // Validation de l'ID comme étant numérique
+            if (!is_numeric($id)) {
+                throw new Exception('L\'ID doit être numérique.');
+            }
+            $user = User::findOrFail($id);
+            $numeroWhatsApp = $user->telephone;
+            $urlWhatsApp = "https://api.whatsapp.com/send?phone=$numeroWhatsApp";
+    
+            return redirect()->to($urlWhatsApp);
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('ContacterJardinier/{id}'); 
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
    
@@ -129,25 +147,29 @@ class CommentaireController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         try {
             $user = User::where('id', $id)
             ->where('role', 'jardinier')
-            ->select('id', 'prenom', 'nom', 'telephone')
+            ->select('id', 'prenom', 'nom', 'telephone','email')
             ->first();
-    
-        if ($user) {
-            return response()->json(['user' => $user]);
-        } else {
-            return response()->json(['message' => 'Utilisateur n\'existe !'], 404);
-        }
-        }catch(\Exception $e) {
+            
+            if (!empty($user->email)) {
+                Mail::to($user->email)->send(new ProfilConsulter($user));
+                return response()->json(['user' => $user]);
+            } else {
+                return response()->json(['message' => 'L\'utilisateur n\'a pas d\'adresse e-mail valide.'], 400);
+            }
+            
+        } catch (\Exception $e) {
+            dd($e->getMessage());
             return response()->json([
                 'status_code' => 500,
                 'error' => 'Une erreur s\'est produite lors du téléchargement',
             ], 500);
         }
+        
        
     }
     

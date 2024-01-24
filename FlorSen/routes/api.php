@@ -53,8 +53,6 @@ Route::controller(NewlettresController::class)->group(function (){
     Route::post('SupprimerNewlettes/{id}', 'supprimer');
     Route::get('ListerProduit','listeProduits');
     Route::get('rechercheParCategorie/{id}','filter');
-
-
 });
 
 Route::middleware(['is_connecte'])->group(function () {
@@ -63,7 +61,9 @@ Route::middleware(['is_connecte'])->group(function () {
         Route::post('ModifierCommentaire/{article}', 'update');
         Route::delete('SupprimerCommentaire/{commentaire}', 'destroy');
         Route::get('ConsulterProfile/{jardinier}','edit');
+        Route::post('ContacterJardinier/{id}', 'contacter');
         Route::get('VoirDetailProduits/{produits}','show');
+        
     });
 });
 
