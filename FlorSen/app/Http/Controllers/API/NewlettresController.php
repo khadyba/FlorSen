@@ -2,29 +2,47 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Produits;
 use App\Models\Newletter;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewlettersRequest;
-use Illuminate\Http\Response;
+use App\Models\Categories;
 
 class NewlettresController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
-    }
+    public function listeProduits()
+{
+    $produits = Produits::where('is_deleted', 0)
+                        ->where('is_retirer', 0)
+                        ->get();
+
+    return response()->json($produits, 200);
+}
+
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function filter($categorieId)
     {
-        //
+        try {
+            $categorie = Categories::findOrFail($categorieId);
+            $produits = $categorie->produits;
+    
+            return response()->json($produits, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status_code' => 404,
+                'error' => 'Catégorie non trouvée',
+            ], 404);
+        }
     }
+    
 
    
 /**
