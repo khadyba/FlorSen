@@ -13,7 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  *     @OA\Property(property="id", type="integer"),
  *     @OA\Property(property="prenom", type="string"),
  *     @OA\Property(property="nom", type="string"),
- *     @OA\Property(property="image", type="string", nullable=true),
+ *     @OA\Property(property="image", type="string", nullable=true,format="file"),
  *     @OA\Property(property="adresse", type="string"),
  *     @OA\Property(property="telephone", type="string"),
  *     @OA\Property(property="email", type="string"),
@@ -83,12 +83,11 @@ class User extends  Authenticatable implements JWTSubject
     }
 
 
-    public function isAdmin()
-{
-    
-    // Logique pour vérifier si l'utilisateur est un administrateur
-    return $this->role === 'admin';
-}
+        public function isAdmin()
+    {
+        
+        return $this->role === 'admin';
+    }
 
   public function UserAll()
   {
@@ -106,6 +105,11 @@ class User extends  Authenticatable implements JWTSubject
   {
       return $this->hasMany(Commentaire::class);
   }
+// Dans le modèle User
+public function isJardinier()
+{
+    return $this->role === 'jardinier';
+}
 
  
 }

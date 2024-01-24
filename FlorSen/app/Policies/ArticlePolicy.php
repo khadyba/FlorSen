@@ -36,15 +36,16 @@ class ArticlePolicy
                          effectuer cette action!');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Article $article): Response
-    {
-        return $user->isAdmin()?
-        Response::allow(): Response::deny('Vous n\'êtes pas autorisé à
-                                          effectuer cette action!');
-    }
+/**
+ * Determine if the user can update the model.
+ */
+public function update(User $user): Response
+{
+    return $user->isAdmin()
+        ? Response::allow()
+        : Response::deny('Vous n\'êtes pas autorisé à
+        effectuer cette action!');
+}
 
     /**
      * Determine whether the user can delete the model.
