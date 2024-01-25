@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
+use Darkaonline\L5Swagger\L5SwaggerServiceProvider;
 
 return [
 

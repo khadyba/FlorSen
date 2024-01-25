@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\ArticleRequest;
 use App\Models\Newletter;
+use OpenApi\Annotations as OA;
+
 class ArticleController extends Controller
 {
  /**

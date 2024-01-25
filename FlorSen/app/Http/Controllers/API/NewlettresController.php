@@ -9,25 +9,66 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewlettersRequest;
 use App\Models\Categories;
+use OpenApi\Annotations as OA;
+
 
 class NewlettresController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+   /**
+ * @OA\Get(
+ *     path="/api/ListerProduit",
+ *     summary="Récupère la liste des produits disponibles",
+ *     tags={"Produits"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Liste des produits récupérée avec succès",
+ *         @OA\JsonContent(
+ *             type="array",
+ *             @OA\Items(ref="#/components/schemas/Produit")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=401,
+ *         description="Non autorisé"
+ *     )
+ * )
+ */
     public function listeProduits()
-{
-    $produits = Produits::where('is_deleted', 0)
-                        ->where('is_retirer', 0)
-                        ->get();
+    {
+        $produits = Produits::where('is_deleted', 0)
+                            ->where('is_retirer', 0)
+                            ->get();
 
-    return response()->json($produits, 200);
-}
+        return response()->json($produits, 200);
+    }
 
 
-    /**
-     * Show the form for creating a new resource.
-     */
+ /**
+ * @OA\Get(
+ *     path="/api/rechercheParCategorie/{id}",
+ *     summary="Filtre les produits par catégorie",
+ *     tags={"Produits"},
+ *     @OA\Parameter(
+ *         name="categorieId",
+ *         in="path",
+ *         required=true,
+ *         description="ID de la catégorie à filtrer",
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Liste des produits filtrée par catégorie",
+ *         @OA\JsonContent(
+ *             type="array",
+ *             @OA\Items(ref="#/components/schemas/Produit")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Catégorie non trouvée"
+ *     )
+ * )
+ */
     public function filter($categorieId)
     {
         try {

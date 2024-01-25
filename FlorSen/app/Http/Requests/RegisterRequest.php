@@ -29,7 +29,7 @@ class RegisterRequest extends FormRequest
                     'adresse'=>'required',
                     'telephone' => [
                           'required',
-                         'regex:/^\d{2}-\d{3}-\d{2}-\d{2}$/',
+                          'regex:/(77|78|75|33)\d{3}\d{2}\d{2}/'
                      ],
                     'email'=>'required|unique:users,email',
                     'password'=>'required|max:8'

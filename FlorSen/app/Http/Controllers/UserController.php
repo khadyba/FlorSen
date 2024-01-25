@@ -95,7 +95,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // 
+        //
         
     }
 
@@ -186,7 +186,6 @@ public function update(Request $request, string $id)
         $user->nom = $request->input('nom', $user->nom);
         $user->adresse = $request->input('adresse', $user->adresse);
         $user->telephone = $request->input('telephone', $user->telephone);
-        $user->email = $request->input('email', $user->email);
 
         $image = $request->input('image');
 
@@ -200,10 +199,6 @@ public function update(Request $request, string $id)
             $user->image = $image->store('image', 'public');
             $user->role = 'jardinier';
         }
-
-        // Hachage du mot de passe
-        $user->password = bcrypt($request->input('password', $user->password));
-
         $user->save();
 
         return response()->json([
