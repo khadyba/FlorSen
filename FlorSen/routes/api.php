@@ -61,8 +61,10 @@ Route::middleware(['is_connecte'])->group(function () {
         Route::post('ModifierCommentaire/{article}', 'update');
         Route::delete('SupprimerCommentaire/{commentaire}', 'destroy');
         Route::get('ConsulterProfile/{jardinier}','edit');
-        Route::post('ContacterJardinier/{id}', 'contacter');
+        Route::post('ContacterJardinier/{id}', 'contact');
         Route::get('VoirDetailProduits/{produits}','show');
+        Route::get('listerCommentaire','afficherCommentaire');
+
         
     });
 });

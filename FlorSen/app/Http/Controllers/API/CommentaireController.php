@@ -14,32 +14,66 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\CommentaireRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use OpenApi\Annotations as OA;
 
 class CommentaireController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function contacter(string $id)
-    {
-        try {
-            // Validation de l'ID comme étant numérique
-            if (!is_numeric($id)) {
-                throw new Exception('L\'ID doit être numérique.');
-            }
-            $user = User::findOrFail($id);
-            $numeroWhatsApp = $user->telephone;
-            $urlWhatsApp = "https://api.whatsapp.com/send?phone=$numeroWhatsApp";
-    
-            return redirect()->to($urlWhatsApp);
-        } catch (ModelNotFoundException $e) {
-            return redirect()->route('ContacterJardinier/{id}'); 
-        } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+   /**
+ * @OA\Get(
+ *     path="/api/ContacterJardinier/{id}",
+ *     summary="Redirige vers la messagerie WhatsApp de l'utilisateur",
+ *     tags={"Utilisateurs"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         description="ID de l'utilisateur à contacter",
+ *         @OA\Schema(type="integer"),
+ *     ),
+ *     @OA\Response(
+ *         response=302,
+ *         description="Redirection vers la messagerie WhatsApp",
+ *         @OA\Header(header="Location", @OA\Schema(type="string")),
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="L'utilisateur n'existe pas",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="error", type="string", example="L'utilisateur n'existe pas"),
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Une erreur s'est produite",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="error", type="string", example="Une erreur s'est produite"),
+ *         )
+ *     ),
+ * )
+ */
+public function contact(string $id)
+{
+    try {
+        // Validation de l'ID comme étant numérique
+        if (!is_numeric($id)) {
+            throw new Exception('L\'ID doit être numérique.');
         }
-    }
 
-   
+                $proprietaire = User::findOrFail($id);
+
+        $numeroWhatsApp = $proprietaire->telephone;
+        // dd($numeroWhatsApp);
+        $urlWhatsApp = "https://api.whatsapp.com/send?phone=$numeroWhatsApp";
+
+        return redirect()->to($urlWhatsApp);
+    } catch (ModelNotFoundException $e) {
+        return redirect()->route('ContacterJardinier'); // Utilisez le bon nom de route
+    } catch (Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
 /**
  * @OA\Post(
  *     path="/api/commentaires",
@@ -112,17 +146,67 @@ class CommentaireController extends Controller
     }
     
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+   /**
+ * @OA\Get(
+ *     path="/api/commentaires",
+ *     summary="Récupère tous les commentaires",
+ *     tags={"Commentaires"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Liste de tous les commentaires récupérée avec succès",
+ *         @OA\JsonContent(
+ *             type="array",
+ *             @OA\Items(ref="#/components/schemas/Commentaire")
+ *         )
+ *     )
+ * )
+ */
+    public function afficherCommentaire()
     {
-        //
+        $commentaires = Commentaire::all();
+        return response()->json($commentaires, 200);
     }
+    
 
-    /**
-     * Display the specified resource.
-     */
+/**
+ * @OA\Get(
+ *     path="/api/VoirDetailProduits/{produits}",
+ *     summary="Affiche les détails d'un produit",
+ *     tags={"Produits"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         description="ID du produit à afficher",
+ *         @OA\Schema(type="integer"),
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Détails du produit récupérés avec succès",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="article", ref="#/components/schemas/Produit"),
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Le produit n'existe pas",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="message", type="string", example="Le produit n'existe pas"),
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Une erreur s'est produite lors du téléchargement",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="error", type="string",
+ *           example="Une erreur s'est produite lors du téléchargement"),
+ *         )
+ *     ),
+ * )
+ */
     public function show(string $id)
     {
         try {
@@ -131,9 +215,9 @@ class CommentaireController extends Controller
             }, 'categorie'])->find($id);
         
             if ($produits) {
-                return response()->json(['article' => $produits]);
+                return response()->json(['produits' => $produits]);
             } else {
-                return response()->json(['message' => 'Article not found'], 404);
+                return response()->json(['message' => 'Le produit n\'existe pas'], 404);
             }
         }  catch(\Exception $e) {
             return response()->json([
@@ -145,8 +229,53 @@ class CommentaireController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
+ * @OA\Get(
+ *     path="/api/ConsulterProfile/{jardinier}",
+ *     summary="Affiche les informations d'un jardinier et envoie un e-mail",
+ *     tags={"Utilisateurs"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         description="ID de l'utilisateur (jardinier) à consulter",
+ *         @OA\Schema(type="integer"),
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Informations de l'utilisateur récupérées avec succès et e-mail envoyé",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="user", ref="#/components/schemas/User"),
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="L'utilisateur n'a pas d'adresse e-mail valide",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="message", type="string",
+ *              example="L'utilisateur n'a pas d'adresse e-mail valide."),
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="L'utilisateur (jardinier) non trouvé",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="message", type="string", example="L'utilisateur (jardinier) non trouvé"),
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Une erreur s'est produite lors du téléchargement",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="error", type="string",
+ *                 example="Une erreur s'est produite lors du téléchargement"),
+ *         )
+ *     ),
+ * )
+ */
     public function edit($id)
     {
         try {

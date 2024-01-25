@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoriesRequest;
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 
 class CategoriesController extends Controller
 {
@@ -26,8 +27,39 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
+ * @OA\Post(
+ *     path="/api/AjouterCategorie",
+ *     summary="Ajoute une nouvelle catégorie",
+ *     tags={"Catégories"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         description="Données de la nouvelle catégorie",
+ *         @OA\JsonContent(
+ *             required={"nom"},
+ *             @OA\Property(property="nom", type="string", example="Nom de la catégorie"),
+ *         ),
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="La catégorie a été ajoutée avec succès",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="statut", type="integer", example=1),
+ *             @OA\Property(property="message", type="string", example="Catégorie ajoutée avec succès!"),
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Une erreur s'est produite lors de l'ajout de la catégorie",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="status_code", type="integer", example=500),
+ *             @OA\Property(property="error", type="string",
+ *               example="Une erreur s'est produite lors de l'ajout de la catégorie"),
+ *         )
+ *     ),
+ * )
+ */
     public function store(CategoriesRequest $request)
     {
         try {
@@ -64,10 +96,52 @@ class CategoriesController extends Controller
     {
         //
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
+/**
+ * @OA\Put(
+ *     path="/api/ModifierCategorie/{id}",
+ *     summary="Modifie une catégorie existante",
+ *     tags={"Catégories"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         description="ID de la catégorie à modifier",
+ *         @OA\Schema(type="string"),
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         description="Nouvelles données de la catégorie",
+ *         @OA\JsonContent(
+ *             required={"nom"},
+ *             @OA\Property(property="nom", type="string", example="Nouveau nom de la catégorie"),
+ *         ),
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="La catégorie a été modifiée avec succès",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="message", type="string", example="Modification effectuée"),
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Catégorie non trouvée",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="message", type="string", example="Catégorie non trouvée"),
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="La modification de la catégorie a échoué",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="message", type="string", example="Modification non effectuée"),
+ *         )
+ *     ),
+ * )
+ */
     public function update(CategoriesRequest $request, string $id)
     {
         $categorie = Categories::findorFail($id);

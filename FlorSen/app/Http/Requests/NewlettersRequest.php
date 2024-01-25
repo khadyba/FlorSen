@@ -24,7 +24,7 @@ class NewlettersRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'=>'required|unique:users,email'
+            'email'=>'required'
         ];
     }
 
