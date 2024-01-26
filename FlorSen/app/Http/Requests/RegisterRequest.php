@@ -33,7 +33,7 @@ class RegisterRequest extends FormRequest
 
                      ],
                     'email'=>'required|unique:users,email',
-                    'password'=>'required|max:8'
+                    'password'=>'required|max:12|min:8'
         ];
     }
 
@@ -52,12 +52,14 @@ class RegisterRequest extends FormRequest
         public function messages()
         {
                     return [
+                            'adresse.required' =>'Veuillez renseignée votre adresse',
                             'telephone.required'=> 'Veuiller mettre un numéro de telephone valide',
+                            'telephone.regex'=> 'Veuiller mettre un numéro de telephone valide',
                             'prenom.required' =>'Veuillez renseignée votre prenom',
                             'nom.required' =>'Veillez renseignée votre nom',
                             'email.required' =>'une adresse  email doit etre fournie',
                             'email.unique' =>'l\adresse email existe déjat',
-                            'password.required' =>'Le mot de passe est requis et doit avoir au minimum 7 caractères',
+                            'password.required' =>'Le mot de passe est requis  au maximum 7 ou 12 caractères',
                     ];
         }
 

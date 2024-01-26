@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('commentaires', function (Blueprint $table) {
             $table->id();
             $table->longText('contenue');
-            $table->decimal('note', 3, 1)->nullable()->default(null)->comment('Note de commentaire (de 1 à 5)');
+            $table->decimal('note', 3, 1)->nullable()->comment('Note de commentaire (de 1 à 5)');
             $table->foreignIdFor(Article::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->timestamps();

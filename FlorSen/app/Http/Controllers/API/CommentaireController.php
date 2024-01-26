@@ -89,6 +89,7 @@ class CommentaireController extends Controller
        try {
         $commentaire = new Commentaire();
         $commentaire->contenue = $request->contenue;
+        $commentaire->note = $request->note;
         $commentaire->article()->associate($article);
         $user = Auth::user();
         $commentaire->user()->associate($user);
