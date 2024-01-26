@@ -25,7 +25,7 @@ class CommentaireController extends Controller
         try {
             // Validation de l'ID comme étant numérique
             if (!is_numeric($id)) {
-                throw new Exception('L\'ID doit être numérique.');
+                return response()->json('L\'ID doit être numérique.');
             }
             $user = User::findOrFail($id);
             $numeroWhatsApp = $user->telephone;
@@ -33,7 +33,7 @@ class CommentaireController extends Controller
     
             return redirect()->to($urlWhatsApp);
         } catch (ModelNotFoundException $e) {
-            return redirect()->route('ContacterJardinier/{id}'); 
+            return redirect()->route('ContacterJardinier/{id}');
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -115,9 +115,12 @@ class CommentaireController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function index($id)
     {
-        //
+        $commentaires = Commentaire::where('article_id', $id)->pluck('contenue');
+        return response()->json([
+            'commentaires' => $commentaires
+        ]);
     }
 
     /**
@@ -133,7 +136,7 @@ class CommentaireController extends Controller
             if ($produits) {
                 return response()->json(['article' => $produits]);
             } else {
-                return response()->json(['message' => 'Article not found'], 404);
+                return response()->json(['message' => 'Article introuvable'], 404);
             }
         }  catch(\Exception $e) {
             return response()->json([
@@ -317,7 +320,6 @@ class CommentaireController extends Controller
  */
     public function destroy(Commentaire $commentaire)
     {
-       
         if (!auth()->check()) {
             return response()->json([
                 'status_code' => 401,
@@ -331,7 +333,6 @@ class CommentaireController extends Controller
             ], 403);
         }
         $commentaire->delete();
-    
         return response()->json(['message' => 'Commentaire supprimé avec succès', 'commentaire' => $commentaire]);
     }
     

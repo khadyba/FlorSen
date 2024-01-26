@@ -23,7 +23,7 @@ class ArticleTest extends TestCase
             'role'=>'admin'
         ]);
         $token = JWTAuth::fromUser($user);
-        $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+        $response = $this->withHeader('Authorization', 'Bearer' . $token)
                          ->post('api/createArticle');
         $response->assertStatus(200);
     }

@@ -1,12 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Http\Requests\NewlettersRequest;
-use App\Models\Newletter;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -95,7 +91,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // 
+        //
         
     }
 

@@ -47,8 +47,8 @@ class UserPolicy
      */
     public function update(User $user): Response
     {
-        return $user->role === 'jardinier' || $user->role === 'clients'|| $user->role === 'admi'?
-        Response::allow(): Response::deny('Vous n\'êtes pas autorisé à
+        return $user->role == 'jardinier' || $user->role =='clients'|| $user->role == 'admin'?
+        Response::allow():Response::deny('Vous n\'êtes pas autorisé à
                                               effectuer cette action!')
         ;
       

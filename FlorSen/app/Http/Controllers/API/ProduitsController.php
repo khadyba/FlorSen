@@ -30,6 +30,12 @@ class ProduitsController extends Controller
         try {
             $this->authorize('create', Produits::class);
             $user = Auth::user();
+            if ($user->is_bloquer) {
+                return response()->json([
+                    'status_code' => 403,
+                    'error' => 'Vous êtes bloqué et n\'êtes pas autorisé à publier un produit.',
+                ], 403);
+            }
             $produits = new Produits();
             $produits->nom = $request->nom;
             $produits->description = $request->description;
@@ -42,6 +48,7 @@ class ProduitsController extends Controller
             if ($image !== null && !$image->getError()) {
                 $produits->image = $image->store('image', 'public');
             }
+
             $produits->save();
             return response()->json([
                 "status" => 1,
@@ -108,11 +115,11 @@ class ProduitsController extends Controller
          $this->authorize('update', Produits::class);
          $produits = Produits::findOrFail($id);
         $user = Auth::user();
-        if ($user->id !== $produits->user_id) {
+        if ($user->is_bloquer || ($user->id !== $produits->user_id)) {
             return response()->json([
-                'status_code' => 401,
-                'error' => 'Vous n\'êtes pas autorisé à modifier ce produit.',
-            ], 401);
+                'status_code' => 403,
+                'error' => 'Vous êtes bloqué ou n\'êtes pas autorisé à modifier  ce produit.',
+            ], 403);
         }
         $produits->nom = $request->nom;
         $produits->description = $request->description;
@@ -149,25 +156,20 @@ class ProduitsController extends Controller
     
             $produits = Produits::findOrFail($id);
             $user = Auth::user();
-    
-            if ($user->id !== $produits->user_id) {
+            if ($user->is_bloquer || ($user->id !== $produits->user_id)) {
                 return response()->json([
-                    'status_code' => 401,
-                    'error' => 'Vous n\'êtes pas autorisé à supprimer ce produit.',
-                ], 401);
+                    'status_code' => 403,
+                    'error' => 'Vous êtes bloqué ou n\'êtes pas autorisé à supprimer ce produit.',
+                ], 403);
             }
-    
-            // Marquer le produit comme supprimé
             $produits->is_deleted = 1;
             $produits->save();
-    
             return response()->json([
                 'status' => 1,
                 'message' => 'Le produit a été supprimé avec succès!',
                 'data' => $produits,
             ]);
         } catch (\Exception $e) {
-            // dd($e->getMessage());
             return response()->json([
                 'status_code' => 500,
                 'error' => 'Une erreur s\'est produite lors de la suppression du produit',

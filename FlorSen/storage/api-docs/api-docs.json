@@ -20,179 +20,10 @@
         }
     },
     "consumes": [
-        "application/json"
+        "multipart/form-data"
     ],
     "paths": {
-        "/api/SupprimerCommentaire/1": {
-            "delete": {
-                "summary": "SupprimerCommentaire",
-                "description": "",
-                "responses": {
-                    "204": {
-                        "description": "Deleted successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Commentaires"
-                ],
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "User-Agent",
-                        "type": "string"
-                    }
-                ]
-            }
-        },
-        "/api/ModifierCommentaire/2": {
-            "post": {
-                "summary": "ModifierCommentaire",
-                "description": "",
-                "responses": {
-                    "201": {
-                        "description": "Created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Commentaires"
-                ],
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "User-Agent",
-                        "type": "string"
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "contenue": {
-                                        "type": "string"
-                                    }
-                                }
-                            },
-                            "example": {
-                                "contenue": "astuce tres  utilise! "
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/AjouterCommentaire/20": {
-            "post": {
-                "summary": "AjouterCommentaire",
-                "description": "",
-                "responses": {
-                    "201": {
-                        "description": "Created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Commentaires"
-                ],
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "User-Agent",
-                        "type": "string"
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "contenue": {
-                                        "type": "string"
-                                    }
-                                }
-                            },
-                            "example": {
-                                "contenue": "article tres enrichissant!"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/SupprimerNewlettes/2": {
-            "post": {
-                "summary": "SeDésabonner",
-                "description": "",
-                "responses": {
-                    "201": {
-                        "description": "Created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Newletters"
-                ],
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "User-Agent",
-                        "type": "string"
-                    }
-                ]
-            }
-        },
-        "/api/AjouterNewletters": {
-            "post": {
-                "summary": "AjouterNewletters",
-                "description": "",
-                "responses": {
-                    "201": {
-                        "description": "Created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Newletters"
-                ],
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "User-Agent",
-                        "type": "string"
-                    }
-                ]
-            }
-        },
-        "/api/VoirDetailArticle/22": {
+        "/api/VoirDetailArticle/{id}": {
             "get": {
                 "summary": "VoirDetailArticle",
                 "description": "",
@@ -205,12 +36,35 @@
                                 "example": ""
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
                     }
                 },
                 "tags": [
                     "Article"
                 ],
                 "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string"
+                    },
                     {
                         "in": "header",
                         "name": "User-Agent",
@@ -232,6 +86,24 @@
                                 "example": ""
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
                     }
                 },
                 "tags": [
@@ -246,7 +118,7 @@
                 ]
             }
         },
-        "/api/destroyArticle/1": {
+        "/api/destroyArticle/{id}": {
             "delete": {
                 "summary": "SupprimerArticle",
                 "description": "",
@@ -259,27 +131,27 @@
                                 "example": ""
                             }
                         }
-                    }
-                },
-                "tags": [
-                    "Article"
-                ],
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "User-Agent",
-                        "type": "string"
-                    }
-                ]
-            }
-        },
-        "/api/updateArticle/1": {
-            "post": {
-                "summary": "ModifierArticle",
-                "description": "",
-                "responses": {
-                    "201": {
-                        "description": "Created successfully",
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "content": {
                             "application/json": {
                                 "schema": {},
@@ -293,11 +165,108 @@
                 ],
                 "parameters": [
                     {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string"
+                    },
+                    {
                         "in": "header",
                         "name": "User-Agent",
                         "type": "string"
                     }
                 ]
+            }
+        },
+        "/api/updateArticle/{id}": {
+            "post": {
+                "summary": "ModifierArticle",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Article"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "titre": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "contenue": {
+                                        "type": "string"
+                                    },
+                                    "": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "titre": "Rose orange",
+                                "image": {
+                                    "type": "string",
+                                    "format": "binary"
+                                },
+                                "contenue": "La couleur rouge est symbole de l’amour, de la beauté et de la passion par excellence dans le langage des fleurs comme dans le langage commun. Des roses rouges seront donc parfaites pour une déclaration d’amour. Elles transmettront à l’être aimé un message d’amour véritable. De toutes les roses, la rose rouge est considérée comme la reine des fleurs.",
+                                "": ""
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/createArticle": {
@@ -313,6 +282,33 @@
                                 "example": ""
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
                     }
                 },
                 "tags": [
@@ -324,7 +320,40 @@
                         "name": "User-Agent",
                         "type": "string"
                     }
-                ]
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "titre": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "contenue": {
+                                        "type": "string"
+                                    },
+                                    "": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "titre": "Les Rose Rouge",
+                                "image": {
+                                    "type": "string",
+                                    "format": "binary"
+                                },
+                                "contenue": "La couleur rouge est symbole de l’amour, de la beauté et de la passion par excellence dans le langage des fleurs comme dans le langage commun. Des roses rouges seront donc parfaites pour une déclaration d’amour. Elles transmettront à l’être aimé un message d’amour véritable. De toutes les roses, la rose rouge est considérée comme la reine des fleurs.",
+                                "": ""
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/modifierProfil/1": {
@@ -340,6 +369,33 @@
                                 "example": ""
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
                     }
                 },
                 "tags": [
@@ -347,14 +403,48 @@
                 ],
                 "parameters": [
                     {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string"
+                    },
+                    {
                         "in": "header",
                         "name": "User-Agent",
                         "type": "string"
                     }
-                ]
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "prenom": {
+                                        "type": "string"
+                                    },
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "adresse": {
+                                        "type": "string"
+                                    },
+                                    "telephone": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "prenom": "Admonistrateur",
+                                "nom": "Gool",
+                                "adresse": " Adresse Admin",
+                                "telephone": " 77-124-44-10"
+                            }
+                        }
+                    }
+                }
             }
         },
-        "/api/debloquerUser/1": {
+        "/api/debloquerUser/{id}": {
             "post": {
                 "summary": "DebloquerUser",
                 "description": "",
@@ -367,27 +457,27 @@
                                 "example": ""
                             }
                         }
-                    }
-                },
-                "tags": [
-                    "User"
-                ],
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "User-Agent",
-                        "type": "string"
-                    }
-                ]
-            }
-        },
-        "/api/blockUser/1": {
-            "post": {
-                "summary": "BloquerUser",
-                "description": "",
-                "responses": {
-                    "201": {
-                        "description": "Created successfully",
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
                         "content": {
                             "application/json": {
                                 "schema": {},
@@ -400,6 +490,70 @@
                     "User"
                 ],
                 "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/api/blockUser/{id}": {
+            "post": {
+                "summary": "BloquerUser",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string"
+                    },
                     {
                         "in": "header",
                         "name": "User-Agent",
@@ -415,6 +569,24 @@
                 "responses": {
                     "200": {
                         "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "content": {
                             "application/json": {
                                 "schema": {},
@@ -448,6 +620,24 @@
                                 "example": ""
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
                     }
                 },
                 "tags": [
@@ -469,6 +659,33 @@
                 "responses": {
                     "201": {
                         "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
                         "content": {
                             "application/json": {
                                 "schema": {},
@@ -502,6 +719,33 @@
                                 "example": ""
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
                     }
                 },
                 "tags": [
@@ -529,68 +773,27 @@
                                 "example": ""
                             }
                         }
-                    }
-                },
-                "tags": [
-                    "User"
-                ],
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "User-Agent",
-                        "type": "string"
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "prenom": {
-                                        "type": "string"
-                                    },
-                                    "nom": {
-                                        "type": "string"
-                                    },
-                                    "image": {
-                                        "type": "string"
-                                    },
-                                    "adresse": {
-                                        "type": "string"
-                                    },
-                                    "telephone": {
-                                        "type": "string"
-                                    },
-                                    "email": {
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string"
-                                    }
-                                }
-                            },
-                            "example": {
-                                "prenom": "awa",
-                                "nom": "Ba",
-                                "image": "https://img.freepik.com/photos-gratuite/vue-belle-fleur-rose-fleurs_23-2150719009.jpg",
-                                "adresse": "dakar",
-                                "telephone": "78-127-45-12",
-                                "email": "aboubacarleye34@gmail.com",
-                                "password": "1234567"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
                             }
                         }
-                    }
-                }
-            }
-        },
-        "/api/login": {
-            "post": {
-                "summary": "Login",
-                "description": "",
-                "responses": {
-                    "201": {
-                        "description": "Created successfully",
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
                         "content": {
                             "application/json": {
                                 "schema": {},
@@ -611,7 +814,98 @@
                 ],
                 "requestBody": {
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "prenom": {
+                                        "type": "string"
+                                    },
+                                    "nom": {
+                                        "type": "string"
+                                    },
+                                    "adresse": {
+                                        "type": "string"
+                                    },
+                                    "telephone": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "prenom": "Awa",
+                                "nom": "Bah",
+                                "adresse": "Ben Tally",
+                                "telephone": "771124528",
+                                "email": "abdoulayekorsediallo@gmail.com",
+                                "password": "12345678"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "summary": "Login",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
                             "schema": {
                                 "type": "object",
                                 "properties": {
@@ -624,7 +918,7 @@
                                 }
                             },
                             "example": {
-                                "email": "bak92147@gmail.com",
+                                "email": "andredembandione1@gmail.com",
                                 "password": "12345678"
                             }
                         }

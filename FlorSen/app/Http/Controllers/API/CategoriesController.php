@@ -86,8 +86,23 @@ class CategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Categories $categories)
     {
-        //
+        if (!auth()->check()) {
+            return response()->json([
+                'status_code' => 401,
+                'error' => 'Vous devez être connecté pour effectuer cette action.',
+            ], 401);
+        }
+        if (auth()->user()->id !== optional($categories->user)->id) {
+            return response()->json([
+                'status_code' => 403,
+                'error' => 'Vous n\'êtes pas autorisé à supprimer ce categories.',
+            ], 403);
+        }
+        $categories->delete();
+    
+        return response()->json(['message' => 'categories supprimé avec succès', 'categories' => $categories]);
+        
     }
 }

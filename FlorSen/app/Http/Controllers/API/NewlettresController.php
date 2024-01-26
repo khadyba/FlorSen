@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\User;
 use App\Models\Produits;
 use App\Models\Newletter;
+use App\Models\Categories;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewlettersRequest;
-use App\Models\Categories;
 
 class NewlettresController extends Controller
 {
@@ -100,9 +101,10 @@ class NewlettresController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function listeJardiniers()
     {
-        //
+        $jardiniers = User::where('role', 'jardinier')->get();
+        return response()->json($jardiniers, 200);
     }
 
     /**

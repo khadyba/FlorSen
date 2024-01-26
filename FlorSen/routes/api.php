@@ -6,6 +6,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\CategoriesController;
 use App\Http\Controllers\API\CommentaireController;
+use App\Http\Controllers\API\MessageriesController;
 use App\Http\Controllers\API\NewlettresController;
 use App\Http\Controllers\API\ProduitsController;
 
@@ -53,6 +54,7 @@ Route::controller(NewlettresController::class)->group(function (){
     Route::post('SupprimerNewlettes/{id}', 'supprimer');
     Route::get('ListerProduit','listeProduits');
     Route::get('rechercheParCategorie/{id}','filter');
+    Route::get('ListJardiniers','listeJardiniers');
 });
 
 Route::middleware(['is_connecte'])->group(function () {
@@ -63,6 +65,8 @@ Route::middleware(['is_connecte'])->group(function () {
         Route::get('ConsulterProfile/{jardinier}','edit');
         Route::post('ContacterJardinier/{id}', 'contacter');
         Route::get('VoirDetailProduits/{produits}','show');
+        Route::get('VoirDetailProduits/{produits}','show');
+        Route::get('ListerCommentaires/{article}', 'index');
         
     });
 });
@@ -83,6 +87,14 @@ Route::middleware(['is_jardinier'])->group(function (){
     Route::controller(CategoriesController::class)->group(function (){
         Route::put('ModifierCategorie/{id}', 'update');
         Route::post('AjouterCategorie', 'store');
+        Route::delete('SupprimerCategorie/{id}', 'destroy');
+
     });
 });
 
+Route::controller(MessageriesController::class)->group(function (){
+    Route::post('EnvoyerMessage/{id}', 'sendMessage');
+    Route::post('RepondreMessage/{message_id}', 'repondreMessage');
+    Route::get('RecupererMessage/{message_id}', 'getMessages');
+
+});
