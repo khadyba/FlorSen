@@ -87,7 +87,7 @@ Route::middleware(['is_jardinier'])->group(function (){
     Route::controller(CategoriesController::class)->group(function (){
         Route::post('ModifierCategorie/{id}', 'update');
         Route::post('AjouterCategorie', 'store');
-        Route::delete('SupprimerCategorie/{id}', 'destroy');
+        Route::delete('SupprimerCategorie/{categories}', 'destroy');
 
     });
 });

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoriesRequest;
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoriesController extends Controller
 {
@@ -31,8 +32,10 @@ class CategoriesController extends Controller
     public function store(CategoriesRequest $request)
     {
         try {
+            $user = auth()->user();
             $categorie = new Categories();
             $categorie->nom = $request->nom;
+            $categorie->user_id = $user->id;
             if ($categorie->save()) {
                 return response()->json([
                     "statut" => 1,
@@ -70,7 +73,15 @@ class CategoriesController extends Controller
      */
     public function update(CategoriesRequest $request, string $id)
     {
+        $user = auth()->user();
+       
         $categorie = Categories::findorFail($id);
+        if ($user->id !== optional($categorie->user)->id) {
+            return response()->json([
+                'status_code' => 403,
+                'error' => 'Vous n\'êtes pas autorisé à modifier cette catégorie.',
+            ], 403);
+        }
         $categorie->nom = $request->nom;
         if ($categorie->save()) {
             return response()->json([
@@ -88,21 +99,23 @@ class CategoriesController extends Controller
      */
     public function destroy(Categories $categories)
     {
-        if (!auth()->check()) {
+        $user = Auth::user();
+        if (!$user) {
             return response()->json([
                 'status_code' => 401,
                 'error' => 'Vous devez être connecté pour effectuer cette action.',
             ], 401);
         }
-        if (auth()->user()->id !== optional($categories->user)->id) {
+        if ($user->id !== $categories->user_id) {
             return response()->json([
                 'status_code' => 403,
-                'error' => 'Vous n\'êtes pas autorisé à supprimer ce categories.',
+                'error' => 'Vous n\'êtes pas autorisé à supprimer cette catégorie.',
             ], 403);
         }
+    
         $categories->delete();
     
-        return response()->json(['message' => 'categories supprimé avec succès', 'categories' => $categories]);
-        
+        return response()->json(['message' => 'Catégorie supprimée avec succès', 'categories' => $categories]);
     }
+    
 }

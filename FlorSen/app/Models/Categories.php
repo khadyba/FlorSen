@@ -9,7 +9,8 @@ class Categories extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'nom'
+        'nom',
+        'user_id'
     ];
 
     public function produits()
@@ -17,5 +18,8 @@ class Categories extends Model
         return $this->hasMany(Produits::class);
     }
 
-    
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
