@@ -55,6 +55,10 @@ Route::controller(NewlettresController::class)->group(function (){
     Route::get('ListerProduit','listeProduits');
     Route::get('rechercheParCategorie/{id}','filter');
     Route::get('ListJardiniers','listeJardiniers');
+    Route::post('LocaliserJardinier/{id}', 'localiser');
+    Route::post('LocaliserIPJardinier/{id}', 'localiserIp');
+
+
 });
 
 Route::middleware(['is_connecte'])->group(function () {

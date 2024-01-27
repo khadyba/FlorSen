@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers\API;
 
+use Exception;
 use App\Models\User;
 use App\Models\Produits;
 use App\Models\Newletter;
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+
+
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewlettersRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class NewlettresController extends Controller
 {
@@ -110,10 +115,73 @@ class NewlettresController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function localiser(string $id)
     {
-        //
+        try {
+
+            if (!is_numeric($id)) {
+                return response()->json('L\'ID doit être numérique.');
+            }
+            
+            $user = User::findOrFail($id);
+            $adresse = $user->adresse;
+            $googleMapsUrl = "https://maps.google.com/?q=$adresse";
+            return redirect()->to($googleMapsUrl);
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('LocaliserJardinier/{id}');
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
+    public function localiserIp(Request $request, string $id)
+    {
+        try {
+            // Validation de l'ID comme étant numérique
+            if (!is_numeric($id)) {
+                return response()->json('L\'ID doit être numérique.');
+            }
+
+            $user = User::findOrFail($id);
+
+            // Remplacez 'VOTRE_CLE' par votre véritable clé d'API ipinfo.io
+            $apiKey = '486a4633162443dcbc4801760c43ad9a';
+
+            // Assurez-vous que la clé d'API est correcte et non vide
+            if (empty($apiKey)) {
+                return response()->json('La clé d\'API ne peut pas être vide.');
+            }
+
+            // Utiliser ipify.org pour obtenir l'adresse IP publique
+            $ipResponse = Http::get("https://api.ipify.org?format=json");
+            $ipInfo = $ipResponse->json();
+
+            // Vérifiez la structure de la réponse pour accéder à l'adresse IP correctement
+            $ipAddress = $ipInfo['ip'] ?? null;
+
+            if (empty($ipAddress)) {
+                return response()->json(['error' => 'Impossible d\'obtenir l\'adresse IP publique.']);
+            }
+
+            // Utiliser l'adresse IP publique pour interroger l'API Abstract IP Geolocation
+            $geoResponse = Http::get("https://ipgeolocation.abstractapi.com/v1/?api_key={$apiKey}&ip_address={$ipAddress}");
+            $geolocation = $geoResponse->json();
+            // Vous pouvez maintenant accéder aux informations de localisation
+            $userLocation = $geolocation['city'] . ', ' . $geolocation['region'] . ', ' . $geolocation['country'];
+
+            // Autres opérations avec les informations de localisation...
+
+            return response()->json(['user_location' => $userLocation]);
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('LocaliserIPJardinier/{id}');
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    
+    
+
+    
+
 
     /**
      * Update the specified resource in storage.
@@ -173,4 +241,5 @@ public function supprimer($id)
         ], Response::HTTP_NOT_FOUND);
     }
 }
+
 }
