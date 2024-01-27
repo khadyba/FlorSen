@@ -98,7 +98,7 @@ class AuthController extends Controller
                     'type' => 'bearer',
                 ]
             ]);
-        }elseif($user->role === 'admin'){ 
+        }elseif($user->role === 'admin'){
             return response()->json([
                 'message' => 'Bienvenue dans votre espace Administrateur!',
                 'user' => $user,

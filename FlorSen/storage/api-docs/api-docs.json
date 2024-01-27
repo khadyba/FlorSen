@@ -175,7 +175,7 @@
                 }
             }
         },
-        "/api/SupprimerCategorie/{id}": {
+        "/api/SupprimerCategorie/{categories}": {
             "delete": {
                 "summary": "SupprimerCategorie",
                 "description": "",
@@ -223,7 +223,7 @@
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "id",
+                        "name": "categories",
                         "type": "string"
                     },
                     {
@@ -231,7 +231,24 @@
                         "name": "User-Agent",
                         "type": "string"
                     }
-                ]
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "": ""
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/ModifierCategorie/{id}": {
@@ -374,7 +391,7 @@
                                 }
                             },
                             "example": {
-                                "nom": "les Arbres "
+                                "nom": "les Roses"
                             }
                         }
                     }
@@ -967,18 +984,18 @@
                                         "type": "string"
                                     },
                                     "image": {
-                                        "type": "string"
-                                    },
-                                    "categories_id": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "format": "binary"
                                     }
                                 }
                             },
                             "example": {
                                 "nom": "l'aloevéra.",
-                                "description": "L’aloe véritable (Aloe vera) peut être cultivée dans le jardin pendant les mois d’été comme plante en bac. Toutefois, son quartier d’hiver nécessite une température d’au moins 10 °C. Elle n’a pas besoin de beaucoup d’eau..",
-                                "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzJFBI5yUXDvpLkWClJ_3EZi-ontS_IYpvZg&usqp=CAU",
-                                "categories_id": "4"
+                                "description": "\"L’aloe véritable (Aloe vera) peut être cultivée dans le jardin pendant les mois d’été comme plante en bac. Toutefois, son quartier d’hiver nécessite une température d’au moins 10 °C. Elle n’a pas besoin de beaucoup d’eau.",
+                                "image": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
                             }
                         }
                     }
@@ -1879,14 +1896,22 @@
                                     },
                                     "telephone": {
                                         "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
                                     }
                                 }
                             },
                             "example": {
-                                "prenom": "Admonistrateur",
-                                "nom": "Gool",
-                                "adresse": " Adresse Admin",
-                                "telephone": " 77-124-44-10"
+                                "prenom": "André",
+                                "nom": "Ndione",
+                                "adresse": " Fasse",
+                                "telephone": "781068298",
+                                "image": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
                             }
                         }
                     }
@@ -2292,16 +2317,16 @@
                                 }
                             },
                             "example": {
-                                "prenom": "Djié",
-                                "nom": "Ngome",
+                                "prenom": "André",
+                                "nom": "Ndione",
                                 "image": {
                                     "type": "string",
                                     "format": "binary"
                                 },
-                                "telephone": "771124528",
+                                "telephone": "781068298",
                                 "adresse": "Bene tally ",
-                                "email": "bouhdiallo22@gmail.com",
-                                "password": "123456789"
+                                "email": "andredembandione1@gmail.com",
+                                "password": "12345678"
                             }
                         }
                     }
