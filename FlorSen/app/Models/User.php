@@ -111,5 +111,9 @@ public function isJardinier()
     return $this->role === 'jardinier';
 }
 
- 
+public function messages()
+{
+    return $this->hasMany(Message::class, 'envoyeur_id')
+                ->orWhere('receveur_id', $this->id);
+}
 }

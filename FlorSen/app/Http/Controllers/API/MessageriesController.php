@@ -194,25 +194,7 @@ class MessageriesController extends Controller
  * @param \App\Models\User $user
  * @return \Illuminate\Http\JsonResponse
  */
-public function getMessages(User $user)
-{
-    try {
-        $authUser = Auth::user();
-        if ($authUser->id !== $user->id) {
-            return 'Non autorisé.';
-        }
-        $messages = Message::where('receveur_id', $user->id)->get();
 
-        return response()->json($messages, 200);
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'status_code' => 401,
-            'error' => true,
-            'message' => $e->getMessage(),
-        ], 401);
-    }
-}
 
     /**
      * Show the form for creating a new resource.
