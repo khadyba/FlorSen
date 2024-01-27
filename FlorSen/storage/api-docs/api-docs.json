@@ -986,6 +986,9 @@
                                     "image": {
                                         "type": "string",
                                         "format": "binary"
+                                    },
+                                    "categories_id": {
+                                        "type": "string"
                                     }
                                 }
                             },
@@ -995,7 +998,8 @@
                                 "image": {
                                     "type": "string",
                                     "format": "binary"
-                                }
+                                },
+                                "categories_id": "1"
                             }
                         }
                     }
