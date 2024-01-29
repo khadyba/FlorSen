@@ -127,6 +127,7 @@ class CommentaireController extends Controller
     /**
      * Display the specified resource.
      */
+    // voir detaim d'un produit
     public function show(string $id)
     {
         try {
@@ -135,9 +136,9 @@ class CommentaireController extends Controller
             }, 'categorie'])->find($id);
         
             if ($produits) {
-                return response()->json(['article' => $produits]);
+                return response()->json(['produits' => $produits]);
             } else {
-                return response()->json(['message' => 'Article introuvable'], 404);
+                return response()->json(['message' => 'Produits  introuvable'], 404);
             }
         }  catch(\Exception $e) {
             return response()->json([
@@ -151,6 +152,7 @@ class CommentaireController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+    // pour consulter le profil d'un jardinier
     public function edit($id)
     {
         try {

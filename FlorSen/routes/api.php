@@ -55,6 +55,9 @@ Route::controller(NewlettresController::class)->group(function (){
     Route::get('ListerProduit','listeProduits');
     Route::get('rechercheParCategorie/{id}','filter');
     Route::get('ListJardiniers','listeJardiniers');
+    Route::post('MotDepasseOublier', 'restorepassword');
+    Route::get('Tokenpasse/{token}','formRetorepassword')->name('password.reset');
+    Route::get('newpassword/{token}', 'newpassword')->name('password.newpassword');
 });
 
 Route::middleware(['is_connecte'])->group(function () {
@@ -65,8 +68,9 @@ Route::middleware(['is_connecte'])->group(function () {
         Route::get('ConsulterProfile/{jardinier}','edit');
         Route::post('ContacterJardinier/{id}', 'contacter');
         Route::get('VoirDetailProduits/{produits}','show');
-        Route::get('VoirDetailProduits/{produits}','show');
         Route::get('ListerCommentaires/{article}', 'index');
+       
+
         
     });
 });

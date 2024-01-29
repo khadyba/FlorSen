@@ -6,10 +6,16 @@ use App\Models\User;
 use App\Models\Produits;
 use App\Models\Newletter;
 use App\Models\Categories;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\NewlettersRequest;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Auth\Events\PasswordReset;
 
 class NewlettresController extends Controller
 {
@@ -24,8 +30,6 @@ class NewlettresController extends Controller
 
     return response()->json($produits, 200);
 }
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -43,9 +47,6 @@ class NewlettresController extends Controller
             ], 404);
         }
     }
-    
-
-   
 /**
  * @OA\Post(
  *     path="/api/AjouterNewletters",
@@ -110,10 +111,57 @@ class NewlettresController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function restorepassword(Request $request  )
     {
-        //
+        $user = User::where('email', $request->email)->first();
+        if (!$user->email) {
+            return response()->json([
+                'errors' =>401,
+                'message' =>'Cette adresse email n\'existe pas !'
+            ]);
+        }
+        $token = Str::random(10);
+        DB::table('password_reset_tokens')->insert([
+            'email' => $user->email,
+            'token' => $token,
+        ]);
+
+        Mail::send('restorepassword', ['token' => $token], function ($message) use ($user) {
+            $message->to($user->email);
+            $message->subject('Mot de passe oublier');
+        });
+
+        return response()->json([
+            'message' => 'Un email de résetage du mot de passe vous a été envoyé',
+        ]);
     }
+    public function formRetorepassword($token)
+    {
+          return view('newpassword',['token' => $token]);
+    }
+
+    public function newpassword(Request $request)
+{// Valider le formulaire de réinitialisation du mot de passe
+    $request->validate([
+        'token' => 'required',
+        'email' => 'required|email',
+        'password' => 'required|confirmed|min:8',
+    ]);
+
+    // Réinitialiser le mot de passe via le trait ResetsPasswords
+    $update=DB::table('password_reset_tokens')->where('token',$request->token)->first();
+    $user= User::where('email',$update->email)->update([
+        'password' => Hash::make($request->password)
+    ]);
+
+    if (!$user) {
+        return response()->json(['error' => 'Cet utilisateur n\'existe pas.'], 404);
+    }
+    
+   DB::table('password_reset_tokens')->where('email', $update->email)->delete();
+   return response()->json(['message' => 'Mot de passe mis à jour avec succès']);
+}
+
 
     /**
      * Update the specified resource in storage.

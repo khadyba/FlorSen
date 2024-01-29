@@ -41,6 +41,7 @@
 </head>
 <body>
     <div class="container">
+        <img src="{{ asset('/public/WhatsApp Image 2024-01-23 à 09.32.38_1d9cd651.jpg') }}" alt="Votre Logo">
         <h1>Chère Abonné,</h1>
         <p>Un nouvel article est disponible! Ne perdez pas de temps, profitez des précieux conseils offerts.</p>
         <a href="{{ url('/lien-vers-votre-article') }}" class="cta-button">Lire l'article</a>

@@ -130,15 +130,17 @@ class ArticleController extends Controller
  *     )
  * )
  */
-    public function show($id)
-    {
-        $article = Article::find($id);
-        if ($article) {
-            return response()->json(['article' => $article]);
-        } else {
-            return response()->json(['message' => 'Article not found'], 404);
-        }
+public function show($id)
+{
+    $article = Article::with('commentaires')->find($id);
+
+    if ($article) {
+        return response()->json(['article' => $article]);
+    } else {
+        return response()->json(['message' => 'L\'article n\'existe pas'], 404);
     }
+}
+
 
     /**
      * Show the form for editing the specified resource.
