@@ -323,12 +323,11 @@ class CommentaireController extends Controller
  */
     public function destroy(Commentaire $commentaire)
     {
-        if (!auth()->check()) {
-            return response()->json([
-                'status_code' => 401,
-                'error' => 'Vous devez être connecté pour effectuer cette action.',
-            ], 401);
-        }
+        $user = auth()->user();
+     if ($user->role === 'admin') {
+        $commentaire->delete();
+        return response()->json(['message' => 'Commentaire supprimé avec succès', 'commentaire' => $commentaire]);
+    }
         if (auth()->user()->id !== optional($commentaire->user)->id) {
             return response()->json([
                 'status_code' => 403,
