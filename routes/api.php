@@ -70,6 +70,8 @@ Route::middleware(['is_connecte'])->group(function () {
         Route::post('ContacterJardinier/{id}', 'contacter');
         Route::get('VoirDetailProduits/{produits}','show');
         Route::get('ListerCommentaires/{article}', 'index');
+        Route::post('Localiserjardiner/{id}', 'localiserIp');
+
       
     });
 });
