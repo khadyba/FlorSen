@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Models\Video;
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use App\Http\Requests\VideoRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CategoriesRequest;
@@ -24,9 +25,16 @@ class CategoriesController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function publiervideo(Request $request)
+    public function publiervideo(VideoRequest $request)
     {
-        $user = Auth::user();
+        try {
+            $user = Auth::user();
+        if ($user->is_bloquer) {
+            return response()->json([
+                'status_code' => 403,
+                'error' => 'Vous êtes bloqué et n\'êtes pas autorisé à publier une video.',
+            ], 403);
+        }
         $video = new Video();
         $video->user_id = $user->id;
         $video->titre = $request->input('titre');
@@ -37,6 +45,13 @@ class CategoriesController extends Controller
         return response()->json([
             'message' => 'Vidéo publiée avec succès'
         ]);
+        }catch (\Exception $e) {
+            return response()->json([
+                'status_code' => 500,
+                'error' => 'Une erreur s\'est produite lors de la publication de la video.',
+            ], 500);
+        }
+      
     }
 
     /**
@@ -83,9 +98,32 @@ class CategoriesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function modifier(VideoRequest $request, $id)
     {
-        //
+        try {
+            $video = Video::findOrFail($id);
+            $user = Auth::user();
+            if ($user->is_bloquer || ($user->id !== $video->user_id)) {
+                return response()->json([
+                    'status_code' => 403,
+                    'error' => 'Vous êtes bloqué ou n\'êtes pas autorisé à modifier  cette video.',
+                ], 403);
+            }
+            $video->user_id = $user->id;
+            $video->titre = $request->input('titre');
+            $video->description = $request->input('description');
+            $video->url = urlencode($request->url);
+            $video->save();
+            return response()->json([
+                'message' => 'Modifiecation Efectuer ! '
+            ]);
+        }  catch (\Exception $e) {
+            return response()->json([
+                'status_code' => 500,
+                'error' => 'Une erreur s\'est produite lors de la modification.',
+            ], 500);
+        }
+       
     }
 
     /**
@@ -138,4 +176,20 @@ class CategoriesController extends Controller
         return response()->json(['message' => 'Catégorie supprimée avec succès', 'categories' => $categories]);
     }
     
+    public function effacer($id)
+    {
+        $user= Auth::user();
+        $video = Video::find($id);
+        if ($user->id !== $video->user_id) {
+            return response()->json([
+                'status_code' => 403,
+                'error' => 'Vous n\'êtes pas autorisé à supprimer cette video.',
+            ], 403);
+        }
+         $video->is_deleted = 1;
+         $video->save();
+
+       return response()->json(['message' => 'Video supprimée avec succès', 'video' => $video]);
+    }
+
 }

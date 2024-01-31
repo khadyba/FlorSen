@@ -58,6 +58,7 @@ Route::controller(NewlettresController::class)->group(function (){
     Route::post('MotDepasseOublier', 'restorepassword');
     Route::get('Tokenpasse/{token}','formRetorepassword')->name('password.reset');
     Route::get('newpassword/{token}', 'newpassword')->name('password.newpassword');
+    Route::get('VoirVideo','VoirLVideo');
 });
 
 Route::middleware(['is_connecte'])->group(function () {
@@ -69,6 +70,7 @@ Route::middleware(['is_connecte'])->group(function () {
         Route::post('ContacterJardinier/{id}', 'contacter');
         Route::get('VoirDetailProduits/{produits}','show');
         Route::get('ListerCommentaires/{article}', 'index');
+      
     });
 });
 
@@ -92,7 +94,8 @@ Route::middleware(['is_jardinier'])->group(function (){
         Route::post('PublierVideo','publiervideo');
         Route::get('recupererVideo','index');
         Route::get('DetailVideo/{id}','show');
-
+        Route::post('RemplacerVideo/{id}','modifier');
+        Route::delete('supprimerVideo/{id}','effacer');
     });
 });
 

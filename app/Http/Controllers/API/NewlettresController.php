@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\User;
+use App\Models\Video;
 use App\Models\Produits;
 use App\Models\Newletter;
 use App\Models\Categories;
@@ -221,4 +222,11 @@ public function supprimer($id)
         ], Response::HTTP_NOT_FOUND);
     }
 }
+
+  public function VoirLVideo(){
+    $videos = Video::where('is_deleted', 0)->get();
+    return response()->json(['videos' => $videos]);
+  }
+
+     
 }
