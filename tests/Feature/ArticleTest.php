@@ -18,7 +18,7 @@ class ArticleTest extends TestCase
     public function test_create_article()
     {
         $user = User::factory()->create([
-            'email'=>'admin@example.fr',
+            'email'=>'ad@example.fr',
             'password'=>bcrypt('password'),
             'role'=>'admin'
         ]);
@@ -45,7 +45,7 @@ class ArticleTest extends TestCase
 public function test_delete_article()
 {
     $user = User::factory()->create([
-        'email' =>'amin@example.com',
+        'email' =>'amdin@example.com',
         'password' => Hash::make('password'),
         'role' => 'admin',
     ]);
@@ -76,7 +76,7 @@ public function test_update_article()
 public function test_view_article()
 {
     $user = User::factory()->create([
-        'email' => 'amin@example.com',
+        'email' => 'ami@example.com',
         'password' => Hash::make('password'),
         'role' => 'admin',
     ]);

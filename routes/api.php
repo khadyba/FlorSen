@@ -69,9 +69,6 @@ Route::middleware(['is_connecte'])->group(function () {
         Route::post('ContacterJardinier/{id}', 'contacter');
         Route::get('VoirDetailProduits/{produits}','show');
         Route::get('ListerCommentaires/{article}', 'index');
-       
-
-        
     });
 });
 
@@ -92,6 +89,9 @@ Route::middleware(['is_jardinier'])->group(function (){
         Route::post('ModifierCategorie/{id}', 'update');
         Route::post('AjouterCategorie', 'store');
         Route::delete('SupprimerCategorie/{categories}', 'destroy');
+        Route::post('PublierVideo','publiervideo');
+        Route::get('recupererVideo','index');
+        Route::get('DetailVideo/{id}','show');
 
     });
 });

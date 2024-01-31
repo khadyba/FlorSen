@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoriesRequest;
+use App\Models\Video;
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\CategoriesRequest;
 
 class CategoriesController extends Controller
 {
@@ -15,15 +16,27 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        //
+        $videos = Video::where('is_deleted', 0)->get();
+
+        return response()->json(['videos' => $videos]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function publiervideo(Request $request)
     {
-        //
+        $user = Auth::user();
+        $video = new Video();
+        $video->user_id = $user->id;
+        $video->titre = $request->input('titre');
+        $video->description = $request->input('description');
+        $video->url = urlencode($request->url);
+        $video->save();
+    
+        return response()->json([
+            'message' => 'Vidéo publiée avec succès'
+        ]);
     }
 
     /**
@@ -57,7 +70,14 @@ class CategoriesController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $video = Video::with(['user' => function ($query) {
+            $query->select('id', 'nom', 'prenom', 'image', 'telephone');
+        }])->find($id);
+        if ($video) {
+            return response()->json(['video' => $video]);
+        }else{
+            return response()->json(['message' => 'Vidéo non trouvé']);
+        }
     }
 
     /**

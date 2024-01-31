@@ -41,7 +41,7 @@ class AuthenticationTest extends TestCase
      public function test_user_can_viewAni()
      {
         $user = User::factory()->create([
-            'email'=>'admin@example.com',
+            'email'=>'a@example.com',
             'password'=>bcrypt('password'),
             'role'=>'admin'
         ]);
@@ -55,7 +55,7 @@ class AuthenticationTest extends TestCase
        public function test_user_can_vienAny()
        {
         $user = User::factory()->create([
-            'email'=>'admin@example.fr',
+            'email'=>'mi@example.fr',
             'password'=>bcrypt('password'),
             'role'=>'admin'
         ]);

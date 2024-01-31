@@ -9,6 +9,8 @@ services:
             - db-data:/var/lib/mysql
         environment:
             MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        ports:
+            - 3007:80
         networks:
             - tutorial
 
@@ -32,11 +34,10 @@ services:
           - "9001:80"
         volumes:
             - ./docker/php/vhosts:/etc/apache2/sites-enabled
-            - ./:/var/www
+            - ./:/var/www/html
         restart: always
         networks:
             - tutorial
-
 networks:
     tutorial:
 
