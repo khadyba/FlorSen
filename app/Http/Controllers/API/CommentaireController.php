@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Mail\ProfilConsulter;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\CommentaireRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -30,7 +31,6 @@ class CommentaireController extends Controller
             $user = User::findOrFail($id);
             $numeroWhatsApp = $user->telephone;
             $urlWhatsApp = "https://api.whatsapp.com/send?phone=$numeroWhatsApp";
-    
             return redirect()->to($urlWhatsApp);
         } catch (ModelNotFoundException $e) {
             return redirect()->route('ContacterJardinier/{id}');
@@ -338,5 +338,28 @@ class CommentaireController extends Controller
         return response()->json(['message' => 'Commentaire supprimé avec succès', 'commentaire' => $commentaire]);
     }
     
+     public function localiserIp(Request  $request , $id)
+     {
+            if (!is_numeric($id)) {
+                return response()->json('L\'ID doit être numérique.');
+            }
+            $jardiner = User::findOrFail($id);
+            $apiKey = '486a4633162443dcbc4801760c43ad9a';
+            if (empty($apiKey)) {
+                return response()->json('La clé d\'API ne peut pas être vide.');
+            }
+            $ipAddress = $request->ip();
+            $response =
+            Http::get("https://ipgeolocation.abstractapi.com/v1/?api_key={$apiKey}&ip_address={$ipAddress}");
+            $geolocation = $response->json();
+            // dd($geolocation);
+            $userLocation = $geolocation['city'] . ', ' . $geolocation['region'] . ', ' . $geolocation['country'];
+            return response()->json(['user_location' => $userLocation]);
+     }
+
+
+
+
+
     
 }

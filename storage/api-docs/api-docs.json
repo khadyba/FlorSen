@@ -734,6 +734,65 @@
                 }
             }
         },
+        "/api/Localiserjardiner/3": {
+            "post": {
+                "summary": "LocaliserjardinerIP",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "clients"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "jardinier",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
         "/api/VoirVideo": {
             "get": {
                 "summary": "VoirVIdeo",
@@ -825,6 +884,11 @@
                     "clients"
                 ],
                 "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string"
+                    },
                     {
                         "in": "header",
                         "name": "User-Agent",
@@ -928,7 +992,7 @@
                 ]
             }
         },
-        "/api/ListerProduit": {
+        "http://localhost:9001/api/ListerProduit": {
             "get": {
                 "summary": "ListeProduits",
                 "description": "",
@@ -1082,7 +1146,7 @@
                 ]
             }
         },
-        "/api/ConsulterProfile/{jardinnier}": {
+        "/api/ConsulterProfile/{jardinier}": {
             "get": {
                 "summary": "ConsulterProfilJardinier",
                 "description": "",
@@ -1529,7 +1593,7 @@
                 ]
             }
         },
-        "/api/SupprimerCommentaire/{commentiare}": {
+        "/api/SupprimerCommentaire/{commentaire}": {
             "delete": {
                 "summary": "SupprimerCommentaire",
                 "description": "",
@@ -2080,6 +2144,60 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/LocaliserIPJardinier/3": {
+            "post": {
+                "summary": "LocaliserIPJardinier",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Newletters"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
             }
         },
         "/api/SupprimerNewlettes/{id}": {
