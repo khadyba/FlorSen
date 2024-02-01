@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3"
 services:
     # Mysql database container
     db:
@@ -28,7 +28,7 @@ services:
         networks:
             - tutorial
     www:
-        build: docker/php
+        build: docker
         container_name: ContainerFlorsen
         ports:
           - "9001:80"
