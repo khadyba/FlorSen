@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Your API Title",
-        "description": "Your API Description",
+        "title": " API Gestion d'activiter de jardininages",
+        "description": "Conçue pour permettre au jardinier de pouvoir elargir l'eur clientelle .",
         "version": "1.0.0"
     },
     "security": [
@@ -511,6 +511,56 @@
                 }
             }
         },
+        "/api/listCategorie/{jardinierId}": {
+            "get": {
+                "summary": "listCategorie",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Categories"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "jardinierId",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
         "/api/SupprimerCategorie/{categories}": {
             "delete": {
                 "summary": "SupprimerCategorie",
@@ -992,7 +1042,7 @@
                 ]
             }
         },
-        "http://localhost:9001/api/ListerProduit": {
+        "/api/ListerProduit": {
             "get": {
                 "summary": "ListeProduits",
                 "description": "",

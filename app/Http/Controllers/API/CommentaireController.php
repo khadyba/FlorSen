@@ -352,7 +352,6 @@ class CommentaireController extends Controller
             $response =
             Http::get("https://ipgeolocation.abstractapi.com/v1/?api_key={$apiKey}&ip_address={$ipAddress}");
             $geolocation = $response->json();
-            // dd($geolocation);
             $userLocation = $geolocation['city'] . ', ' . $geolocation['region'] . ', ' . $geolocation['country'];
             return response()->json(['user_location' => $userLocation]);
      }

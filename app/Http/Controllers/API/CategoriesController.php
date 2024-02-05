@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers\API;
+use FFMpeg\FFMpeg;
 
+use App\Models\User;
 use App\Models\Video;
 use App\Models\Categories;
 use Illuminate\Http\Request;
@@ -9,6 +11,7 @@ use App\Http\Requests\VideoRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CategoriesRequest;
+
 
 class CategoriesController extends Controller
 {
@@ -27,33 +30,42 @@ class CategoriesController extends Controller
      */
     public function publiervideo(VideoRequest $request)
     {
-        try {
-            $user = Auth::user();
+      
+       
+        $user = Auth::user();
         if ($user->is_bloquer) {
             return response()->json([
                 'status_code' => 403,
-                'error' => 'Vous êtes bloqué et n\'êtes pas autorisé à publier une video.',
+                'error' => 'Vous êtes bloqué et n\'êtes pas autorisé à publier une vidéo.',
             ], 403);
         }
+        
         $video = new Video();
         $video->user_id = $user->id;
         $video->titre = $request->input('titre');
         $video->description = $request->input('description');
-        $video->url = urlencode($request->url);
+        
+        $file = $request->file('video');
+        
+        if ($file) {
+            $fileName = time().'.'.$file->getClientOriginalExtension();
+            $file->move(public_path('videos'), $fileName);
+        
+            // $ffmpeg = FFMpeg::create();
+            // $videoFFmpeg = $ffmpeg->open(public_path('videos /'.$fileName));
+        
+            // // Ajoutez la ligne suivante pour copier la piste audio sans la réencoder
+            // $videoFFmpeg->save(new \FFMpeg\Format\Video\X264('aac'), public_path('videos/'.$fileName));
+        
+            $video->video = 'videos/'.$fileName;
+        }
+        
         $video->save();
-    
+        
         return response()->json([
             'message' => 'Vidéo publiée avec succès'
         ]);
-        }catch (\Exception $e) {
-            return response()->json([
-                'status_code' => 500,
-                'error' => 'Une erreur s\'est produite lors de la publication de la video.',
-            ], 500);
-        }
-      
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -192,4 +204,18 @@ class CategoriesController extends Controller
        return response()->json(['message' => 'Video supprimée avec succès', 'video' => $video]);
     }
 
+
+    public function listCategorie($jardinierId)
+    {
+        $user= Auth::user();
+        if (!$user->id == $jardinierId) {
+            return response()->json([
+                'status_code' => 403,
+                'error' => 'Vous n\'etes pas autorisé à consulter cette catégorie.',
+            ], 403);
+        }
+        $categories = Categories::where('user_id', $jardinierId)->get();
+        return response()->json(['categories' => $categories]);
+    }
+    
 }

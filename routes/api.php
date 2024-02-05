@@ -98,6 +98,7 @@ Route::middleware(['is_jardinier'])->group(function (){
         Route::get('DetailVideo/{id}','show');
         Route::post('RemplacerVideo/{id}','modifier');
         Route::delete('supprimerVideo/{id}','effacer');
+        Route::get('listCategorie/{jardinierId}','listCategorie');
     });
 });
 
