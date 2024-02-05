@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": " API Gestion d'activiter de jardininages",
-        "description": "Conçue pour permettre au jardinier de pouvoir elargir l'eur clientelle .",
+        "title": "Your API Title",
+        "description": "Your API Description",
         "version": "1.0.0"
     },
     "security": [
@@ -151,7 +151,7 @@
                                     "description": {
                                         "type": "string"
                                     },
-                                    "url": {
+                                    "video": {
                                         "type": "string",
                                         "format": "binary"
                                     }
@@ -160,7 +160,7 @@
                             "example": {
                                 "titre": "plantation des carrotte",
                                 "description": "periode fertile fevrier en avril",
-                                "url": {
+                                "video": {
                                     "type": "string",
                                     "format": "binary"
                                 }
@@ -340,7 +340,7 @@
                                     "description": {
                                         "type": "string"
                                     },
-                                    "url": {
+                                    "video": {
                                         "type": "string",
                                         "format": "binary"
                                     }
@@ -349,7 +349,7 @@
                             "example": {
                                 "titre": "planter des carrote",
                                 "description": "les carotte se plante du fevrier jusqu'au moi d'avril !",
-                                "url": {
+                                "video": {
                                     "type": "string",
                                     "format": "binary"
                                 }
