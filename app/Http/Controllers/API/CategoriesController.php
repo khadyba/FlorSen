@@ -44,12 +44,12 @@ class CategoriesController extends Controller
         $video->user_id = $user->id;
         $video->titre = $request->input('titre');
         $video->description = $request->input('description');
-        
+       
         $file = $request->file('video');
-        
         if ($file) {
             $fileName = time().'.'.$file->getClientOriginalExtension();
             $file->move(public_path('videos'), $fileName);
+            $video->video = 'public/video/'.$fileName;
         }
             $video->save();
         
