@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Video;
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use FFMpeg\Format\Video\X264;
 use App\Http\Requests\VideoRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +32,6 @@ class CategoriesController extends Controller
     public function publiervideo(VideoRequest $request)
     {
       
-       
         $user = Auth::user();
         if ($user->is_bloquer) {
             return response()->json([
@@ -50,17 +50,8 @@ class CategoriesController extends Controller
         if ($file) {
             $fileName = time().'.'.$file->getClientOriginalExtension();
             $file->move(public_path('videos'), $fileName);
-        
-            // $ffmpeg = FFMpeg::create();
-            // $videoFFmpeg = $ffmpeg->open(public_path('videos /'.$fileName));
-        
-            // // Ajoutez la ligne suivante pour copier la piste audio sans la réencoder
-            // $videoFFmpeg->save(new \FFMpeg\Format\Video\X264('aac'), public_path('videos/'.$fileName));
-        
-            $video->video = 'videos/'.$fileName;
         }
-        
-        $video->save();
+            $video->save();
         
         return response()->json([
             'message' => 'Vidéo publiée avec succès'
