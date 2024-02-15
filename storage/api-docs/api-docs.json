@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": " API de gestion d'activité de jardinage local dénommé “FLORSEN”",
-        "description": " API Laravel pour les jardinier ",
+        "title": "Your API Title",
+        "description": "Your API Description",
         "version": "1.0.0"
     },
     "security": [
@@ -511,7 +511,7 @@
                 }
             }
         },
-        "/api/listCategorie/{jardinierId}": {
+        "/api/listCategorie": {
             "get": {
                 "summary": "listCategorie",
                 "description": "",
@@ -706,7 +706,7 @@
                                 }
                             },
                             "example": {
-                                "nom": "herbaser"
+                                "nom": "harbustre"
                             }
                         }
                     }
@@ -777,7 +777,7 @@
                                 }
                             },
                             "example": {
-                                "nom": "les Roses"
+                                "nom": "les Margarite"
                             }
                         }
                     }
@@ -890,7 +890,7 @@
         },
         "/api/LocaliserJardinier/{id}": {
             "post": {
-                "summary": "LocaliserJardinier",
+                "summary": "LocaliserIPJardinier",
                 "description": "",
                 "responses": {
                     "201": {
@@ -1849,14 +1849,14 @@
                                     "contenue": {
                                         "type": "string"
                                     },
-                                    "note": {
+                                    "jaime": {
                                         "type": "string"
                                     }
                                 }
                             },
                             "example": {
-                                "contenue": "j'adore vos article!",
-                                "note": ""
+                                "contenue": "les article sont top !",
+                                "jaime": "1"
                             }
                         }
                     }
@@ -2194,60 +2194,6 @@
                         }
                     }
                 }
-            }
-        },
-        "/api/LocaliserIPJardinier/3": {
-            "post": {
-                "summary": "LocaliserIPJardinier",
-                "description": "",
-                "responses": {
-                    "201": {
-                        "description": "Created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Unauthorize",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Newletters"
-                ],
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "User-Agent",
-                        "type": "string"
-                    }
-                ]
             }
         },
         "/api/SupprimerNewlettes/{id}": {
@@ -3051,15 +2997,15 @@
                                 }
                             },
                             "example": {
-                                "prenom": "André",
-                                "nom": "Ndione",
+                                "prenom": "Aboubacar",
+                                "nom": "leye",
                                 "image": {
                                     "type": "string",
                                     "format": "binary"
                                 },
-                                "telephone": "781068298",
-                                "adresse": "Bene tally ",
-                                "email": "andredembandione1@gmail.com",
+                                "telephone": "771124528",
+                                "adresse": "Medina",
+                                "email": "aboubacarleye34@gmail.com",
                                 "password": "12345678"
                             }
                         }
@@ -3144,7 +3090,7 @@
                                 }
                             },
                             "example": {
-                                "email": "aboubacarleye34@gmail.com",
+                                "email": "andredembandione1@gmail.com",
                                 "password": "12345678"
                             }
                         }
