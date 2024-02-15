@@ -14,7 +14,7 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         $role = new Role();
-        $role->nom = 'client';
+        $role->nom = ('client');
         $role->save();
 
     }

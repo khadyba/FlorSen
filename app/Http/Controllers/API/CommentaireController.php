@@ -9,6 +9,7 @@ use App\Models\Produits;
 use App\Models\Commentaire;
 use Illuminate\Http\Request;
 use App\Mail\ProfilConsulter;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -89,7 +90,7 @@ class CommentaireController extends Controller
        try {
         $commentaire = new Commentaire();
         $commentaire->contenue = $request->contenue;
-        $commentaire->note = $request->note;
+        $commentaire->jaime = $request->has('jaime') ? $request->jaime : false;
         $commentaire->article()->associate($article);
         $user = Auth::user();
         $commentaire->user()->associate($user);
@@ -114,12 +115,15 @@ class CommentaireController extends Controller
      */
     public function index($id)
     {
-        $commentaires = Commentaire::where('article_id', $id)->pluck('contenue');
+    $commentaires = Commentaire::where('article_id', $id)
+    ->select('contenue', 'jaime', DB::raw('count(*) as count_jaime'))
+    ->groupBy('contenue', 'jaime')
+    ->get();
+
         return response()->json([
             'commentaires' => $commentaires
         ]);
     }
-
     /**
      * Display the specified resource.
      */

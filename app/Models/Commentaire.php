@@ -11,7 +11,7 @@ class Commentaire extends Model
 
     protected $fillable = [
         'contenue',
-        'note',
+        'jaime',
         'article_id',
         'user_id'
     ];

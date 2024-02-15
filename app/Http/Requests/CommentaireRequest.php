@@ -25,6 +25,7 @@ class CommentaireRequest extends FormRequest
     {
         return [
             'contenue' => 'required|string|max:500',
+             'jaime'
         ];
     }
 
