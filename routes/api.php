@@ -88,19 +88,19 @@ Route::middleware(['is_jardinier'])->group(function () {
     });
 });
 
-Route::middleware(['is_jardinier'])->group(function (){
+
     Route::controller(CategoriesController::class)->group(function (){
-        Route::post('ModifierCategorie/{id}', 'update');
-        Route::post('AjouterCategorie', 'store');
-        Route::delete('SupprimerCategorie/{categories}', 'destroy');
-        Route::post('PublierVideo','publiervideo');
+        Route::post('ModifierCategorie/{id}', 'update')->middleware('checkadmin');
+        Route::post('AjouterCategorie', 'store')->middleware('checkadmin');
+        Route::delete('SupprimerCategorie/{categories}', 'destroy')->middleware('checkadmin');
+        Route::post('PublierVideo','publiervideo')->middleware('is_jardinier');
         Route::get('recupererVideo','index');
         Route::get('DetailVideo/{id}','show');
-        Route::post('RemplacerVideo/{id}','modifier');
-        Route::delete('supprimerVideo/{id}','effacer');
-        Route::get('listCategorie/{jardinierId}','listCategorie');
+        Route::post('RemplacerVideo/{id}','modifier')->middleware('is_jardinier');
+        Route::delete('supprimerVideo/{id}','effacer')->middleware(['is_jardinier','checkadmin']);
+        Route::get('listCategorie','listCategorie');
     });
-});
+
 
 Route::controller(MessageriesController::class)->group(function (){
     Route::post('EnvoyerMessage/{id}', 'sendMessage');

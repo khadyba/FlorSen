@@ -33,7 +33,8 @@ class RegisterRequest extends FormRequest
 
                      ],
                     'email'=>'required|unique:users,email',
-                    'password'=>'required|max:12|min:8'
+                    'password'=>'required|max:12|min:8',
+                    'role_id'
         ];
     }
 

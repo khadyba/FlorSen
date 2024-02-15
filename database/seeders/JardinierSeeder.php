@@ -21,7 +21,7 @@ class JardinierSeeder extends Seeder
         $admin->telephone = '771124528';
         $admin->email = 'aboubacarleye34@gmail.com';
         $admin->password = bcrypt('12345678');
-        $admin->role = 'jardinier';
+        $admin->role_id = 2;
         $admin->save();
     }
 }

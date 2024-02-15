@@ -108,11 +108,7 @@ class CommentaireController extends Controller
             'error' => 'Une erreur s\'est produite lors de l\'ajout du commentaire.',
         ], 500);
        }
-       
-       
     }
-    
-
     /**
      * Store a newly created resource in storage.
      */
@@ -175,11 +171,7 @@ class CommentaireController extends Controller
                 'error' => 'Une erreur s\'est produite lors du téléchargement',
             ], 500);
         }
-        
-       
     }
-    
-  
 /**
  * @OA\Post(
  *     path="/api/ModifierCommentaire/{article}",
@@ -324,7 +316,7 @@ class CommentaireController extends Controller
     public function destroy(Commentaire $commentaire)
     {
         $user = auth()->user();
-     if ($user->role === 'admin') {
+     if ($user->role_id === 1) {
         $commentaire->delete();
         return response()->json(['message' => 'Commentaire supprimé avec succès', 'commentaire' => $commentaire]);
     }
@@ -355,10 +347,4 @@ class CommentaireController extends Controller
             $userLocation = $geolocation['city'] . ', ' . $geolocation['region'] . ', ' . $geolocation['country'];
             return response()->json(['user_location' => $userLocation]);
      }
-
-
-
-
-
-    
 }

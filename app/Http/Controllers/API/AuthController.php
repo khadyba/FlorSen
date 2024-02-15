@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\API;
-
+use App\Models\Role;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -89,7 +89,7 @@ class AuthController extends Controller
             ], 401);
         }
         $user = Auth::user();
-        if ($user->role === 'jardinier') {
+        if ($user->role_id === 2) {
             return response()->json([
                 'message' => 'Bienvenue dans votre espace personnel ! ',
                 'user' => $user,
@@ -98,7 +98,7 @@ class AuthController extends Controller
                     'type' => 'bearer',
                 ]
             ]);
-        }elseif($user->role === 'admin'){
+        }elseif($user->role_id === 1){
             return response()->json([
                 'message' => 'Bienvenue dans votre espace Administrateur!',
                 'user' => $user,
@@ -108,7 +108,7 @@ class AuthController extends Controller
                 ]
             ]);
         }
-        elseif($user->role === 'clients') {
+        elseif($user->role_id === 3) {
             return response()->json([
                 'message' => 'Félicitations ! Vous êtes connecté.',
                 'user' => $user,
@@ -167,44 +167,43 @@ class AuthController extends Controller
  */
 public function register(RegisterRequest $request)
 {
-    try {
-        $user = new User();
-        $user->prenom = $request->prenom;
-        $user->nom = $request->nom;
-        $user->adresse = $request->adresse;
-        $user->telephone = $request->telephone;
-        $user->email = $request->email;
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-        
-            // Vérifier si le fichier image est valide
-            if ($image->isValid()) {
-                $user->image = $image->store('image', 'public');
-                $user->role = 'jardinier';
-            } else {
-                // Gérer le cas où le fichier image n'est pas valide
-                return response()->json([
-                    'status_code' => 400,
-                    'error' => 'Le fichier image n\'est pas valide.',
-                ], 400);
-            }
-        }
-        
-        // Hachage du mot de passe
-        $user->password = bcrypt($request->password);
-        $user->save();
+    $user = new User();
+    $user->prenom = $request->prenom;
+    $user->nom = $request->nom;
+    $user->adresse = $request->adresse;
+    $user->telephone = $request->telephone;
+    $user->email = $request->email;
 
-        return response()->json([
-            'status_code' => 200,
-            'status_message' => 'Inscription réussie !',
-            'user' => $user
-        ]);
-    } catch (Exception $e) {
-        return response()->json([
-            'status_code' => 500,
-            'error' => 'Une erreur s\'est produite lors du traitement de votre demande.',
-        ], 500);
+    // Vérifier si l'image est fournie
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+
+        // Vérifier si le fichier image est valide
+        if ($image->isValid()) {
+            $user->image = $image->store('image', 'public');
+            // Attribuer le rôle du jardinier (role_id = 2)
+            $user->role()->associate(Role::find(2));
+        } else {
+            // Gérer le cas où le fichier image n'est pas valide
+            return response()->json([
+                'status_code' => 400,
+                'error' => 'Le fichier image n\'est pas valide.',
+            ], 400);
+        }
+    } else {
+        // Aucune image fournie, attribuer le rôle du client (role_id = 3)
+        $user->role()->associate(Role::find(3));
     }
+
+    // Hachage du mot de passe
+    $user->password = bcrypt($request->password);
+    $user->save();
+
+    return response()->json([
+        'status_code' => 200,
+        'status_message' => 'Inscription réussie !',
+        'user' => $user
+    ]);
 }
 
 

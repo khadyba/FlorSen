@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\API;
-
 use App\Models\User;
 use App\Models\Video;
 use App\Models\Produits;
@@ -15,8 +14,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\NewlettersRequest;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Auth\Events\PasswordReset;
+
 
 class NewlettresController extends Controller
 {
@@ -105,7 +103,7 @@ class NewlettresController extends Controller
      */
     public function listeJardiniers()
     {
-        $jardiniers = User::where('role', 'jardinier')->get();
+        $jardiniers = User::where('role_id', 2)->get();
         return response()->json($jardiniers, 200);
     }
 
@@ -227,6 +225,4 @@ public function supprimer($id)
     $videos = Video::where('is_deleted', 0)->get();
     return response()->json(['videos' => $videos]);
   }
-
-     
 }

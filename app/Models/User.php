@@ -39,7 +39,7 @@ class User extends  Authenticatable implements JWTSubject
         'telephone',
         'email',
         'password',
-        'role'
+        'role_id'
     ];
 
     /**
@@ -83,15 +83,21 @@ class User extends  Authenticatable implements JWTSubject
     }
 
 
+        public function role()
+        {
+            return $this->belongsTo(Role::class);
+        }
+
+
         public function isAdmin()
     {
         
-        return $this->role === 'admin';
+        return $this->role_id	 === 1;
     }
 
   public function UserAll()
   {
-     return $this->role === ['clients','jardinier','admin'];
+     return $this->role_id	 === [1,2,3];
   }
 
 
@@ -108,7 +114,7 @@ class User extends  Authenticatable implements JWTSubject
 // Dans le modèle User
 public function isJardinier()
 {
-    return $this->role === 'jardinier';
+    return $this->role_id	 === 2 ;
 }
 
 public function messages()

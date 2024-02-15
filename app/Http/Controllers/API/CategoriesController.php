@@ -1,13 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\API;
-use FFMpeg\FFMpeg;
-
-use App\Models\User;
 use App\Models\Video;
 use App\Models\Categories;
-use Illuminate\Http\Request;
-use FFMpeg\Format\Video\X264;
 use App\Http\Requests\VideoRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -138,14 +133,7 @@ class CategoriesController extends Controller
     public function update(CategoriesRequest $request, string $id)
     {
         $user = auth()->user();
-       
         $categorie = Categories::findorFail($id);
-        if ($user->id !== optional($categorie->user)->id) {
-            return response()->json([
-                'status_code' => 403,
-                'error' => 'Vous n\'êtes pas autorisé à modifier cette catégorie.',
-            ], 403);
-        }
         $categorie->nom = $request->nom;
         if ($categorie->save()) {
             return response()->json([
@@ -170,15 +158,7 @@ class CategoriesController extends Controller
                 'error' => 'Vous devez être connecté pour effectuer cette action.',
             ], 401);
         }
-        if ($user->id !== $categories->user_id) {
-            return response()->json([
-                'status_code' => 403,
-                'error' => 'Vous n\'êtes pas autorisé à supprimer cette catégorie.',
-            ], 403);
-        }
-    
         $categories->delete();
-    
         return response()->json(['message' => 'Catégorie supprimée avec succès', 'categories' => $categories]);
     }
     
@@ -199,16 +179,10 @@ class CategoriesController extends Controller
     }
 
 
-    public function listCategorie($jardinierId)
+    public function listCategorie()
     {
         $user= Auth::user();
-        if (!$user->id == $jardinierId) {
-            return response()->json([
-                'status_code' => 403,
-                'error' => 'Vous n\'etes pas autorisé à consulter cette catégorie.',
-            ], 403);
-        }
-        $categories = Categories::where('user_id', $jardinierId)->get();
+        $categories = Categories::all();
         return response()->json(['categories' => $categories]);
     }
     

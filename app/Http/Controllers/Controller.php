@@ -12,8 +12,6 @@ use OpenApi\Annotations as OA;
  *         "BearerAuth": {}
  *     },
  */
-
-
 /**
  * @OA\SecurityScheme(
  *     securityScheme="BearerAuth",
