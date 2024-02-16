@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('commentaires', function (Blueprint $table) {
             $table->id();
-            $table->longText('contenue');
+            $table->longText('contenue')->nullable();
             $table->boolean('jaime')->default(false);
             $table->foreignIdFor(Article::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
