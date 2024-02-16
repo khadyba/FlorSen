@@ -550,7 +550,7 @@
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "jardinierId",
+                        "name": "",
                         "type": "string"
                     },
                     {
