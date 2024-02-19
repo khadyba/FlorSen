@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Your API Title",
-        "description": "Your API Description",
+        "title": " API de gestion d'activité de jardinage local dénommé “FLORSEN”",
+        "description": "API Developpé avec laravel",
         "version": "1.0.0"
     },
     "security": [
@@ -359,6 +359,191 @@
                 }
             }
         },
+        "/api/SupprimerMessage/{messageId}": {
+            "delete": {
+                "summary": "SupprimerMessage",
+                "description": "",
+                "responses": {
+                    "204": {
+                        "description": "Deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Messageries"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "messageId",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/api/modifierMessage/{messageId}": {
+            "post": {
+                "summary": "ModifierMessage",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Messageries"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "messageId",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "contenue": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "contenue": "Jattend votre reponses!"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/RecupererMessage/{envoyeurId}": {
+            "get": {
+                "summary": "Mes Message",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Messageries"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "envoyeurId",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
         "/api/RepondreMessage/{message_id}": {
             "post": {
                 "summary": "ReponsesMessage",
@@ -435,7 +620,7 @@
                 }
             }
         },
-        "/api/EnvoyerMessage/{id}": {
+        "/api/EnvoyerMessage/2": {
             "post": {
                 "summary": "EnvoyerMessage",
                 "description": "",
@@ -504,7 +689,7 @@
                                 }
                             },
                             "example": {
-                                "contenue": "Bonjour je veut vous engager pour un travaille "
+                                "contenue": "Vous avez pas repondue"
                             }
                         }
                     }
