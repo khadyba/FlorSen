@@ -18,7 +18,64 @@ class MessageriesController extends Controller
     {
         //
     }
+    public function getMessages($envoyeurId)
+    {
+        $user = Auth::user();
+        if ($user->id != $envoyeurId) {
+            return response()->json([
+                'message' => 'Vous ne pouvez pas voir les messages que vous n\'avez pas envoyés'
+            ]);
+        }
+        $messagesEnvoyes = Message::where('envoyeur_id', $envoyeurId)->get();
+        return response()->json([
+            'la liste des messages que vous avez envoyés' => $messagesEnvoyes
+        ]);
+    }
+    
+    public function modifierMessage(Message $messageId)
+{
+    $user = Auth::user();
+    $message = Message::where('id', $messageId->id)->first();
+    // dd($message);
+    if (!$message) {
+        return response()->json([
+            'message' => 'Message non trouvé'
+        ], 404);
+    }
+    if ($user->id != $messageId->envoyeur_id) {
+        return response()->json([
+            'message' => 'Vous ne pouvez pas modifier ce message'
+        ], 403);
+    }
 
+    $message->update([
+        'contenue' => request('contenue'),
+    ]);
+
+    return response()->json([
+        'message' => 'Message modifié avec succès'
+    ]);
+}
+
+    public function supprimerMessage(Message $messageId)
+    {
+        $user = Auth::user();
+        $message = Message::where('id', $messageId->id)->first();
+        if (!$message) {
+            return response()->json([
+                'message' => 'Message non trouvé'
+            ], 404);
+        }
+        if ($user->id != $messageId->envoyeur_id) {
+            return response()->json([
+                'message' => 'Vous ne pouvez pas supprimer ce message'
+            ], 403);
+        }
+        $message->delete();
+        return response()->json([
+            'message' => 'Message supprimé avec succès'
+        ]);
+    }
 /**
  * @OA\Post(
  *     path="/api/EnvoyerMessage/{id}",

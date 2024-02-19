@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'envoyeur_id',
+        'receveur_id',
+        'message_parent_id',
+        'contenue'
+    ];
 
     public function envoyer()
     {

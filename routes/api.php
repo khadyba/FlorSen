@@ -105,6 +105,8 @@ Route::middleware(['is_jardinier'])->group(function () {
 Route::controller(MessageriesController::class)->group(function (){
     Route::post('EnvoyerMessage/{id}', 'sendMessage');
     Route::post('RepondreMessage/{message_id}', 'repondreMessage');
-    Route::get('RecupererMessage/{message_id}', 'getMessages');
+    Route::get('RecupererMessage/{envoyeurId}', 'getMessages');
+    Route::post('modifierMessage/{messageId}', 'modifierMessage');
+    Route::delete('SupprimerMessage/{messageId}', 'supprimerMessage');
 
 });
