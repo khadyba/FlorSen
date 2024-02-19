@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": " API de gestion d'activité de jardinage local dénommé “FLORSEN”",
-        "description": "API Developpé avec laravel",
+        "title": " API de gestion d'activité de jardinage local dénommé “FLORSEN” ",
+        "description": " API Laravel",
         "version": "1.0.0"
     },
     "security": [
@@ -620,7 +620,7 @@
                 }
             }
         },
-        "/api/EnvoyerMessage/2": {
+        "/api/EnvoyerMessage/{id}": {
             "post": {
                 "summary": "EnvoyerMessage",
                 "description": "",
