@@ -24,7 +24,8 @@ class CommentaireRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'contenue' => 'required|string|max:500',
+            'contenue' => 'string|max:500',
+             'jaime'
         ];
     }
 
@@ -38,13 +39,13 @@ class CommentaireRequest extends FormRequest
     ]));
    }
 
-   public function messages()
-   {
-           return [
-               'contenue.required' =>'Veuillez mettre un contenue!',
+//    public function messages()
+//    {
+//            return [
+//                'contenue.required' =>'Veuillez mettre un contenue!',
                
-       ];
+//        ];
 
-   }
+//    }
 
 }

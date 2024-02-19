@@ -1,14 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\API;
-
 use App\Models\Video;
 use App\Models\Categories;
-use Illuminate\Http\Request;
 use App\Http\Requests\VideoRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CategoriesRequest;
+
 
 class CategoriesController extends Controller
 {
@@ -26,33 +25,35 @@ class CategoriesController extends Controller
      * Show the form for creating a new resource.
      */
     public function publiervideo(VideoRequest $request)
-    {
-        try {
-            $user = Auth::user();
-        if ($user->is_bloquer) {
-            return response()->json([
-                'status_code' => 403,
-                'error' => 'Vous êtes bloqué et n\'êtes pas autorisé à publier une video.',
-            ], 403);
-        }
-        $video = new Video();
-        $video->user_id = $user->id;
-        $video->titre = $request->input('titre');
-        $video->description = $request->input('description');
-        $video->url = urlencode($request->url);
-        $video->save();
-    
+{
+    $user = Auth::user();
+    if ($user->is_bloquer) {
         return response()->json([
-            'message' => 'Vidéo publiée avec succès'
-        ]);
-        }catch (\Exception $e) {
-            return response()->json([
-                'status_code' => 500,
-                'error' => 'Une erreur s\'est produite lors de la publication de la video.',
-            ], 500);
-        }
-      
+            'status_code' => 403,
+            'error' => 'Vous êtes bloqué et n\'êtes pas autorisé à publier une vidéo.',
+        ], 403);
     }
+
+    $video = new Video();
+    $video->user_id = $user->id;
+    $video->titre = $request->input('titre');
+    $video->description = $request->input('description');
+
+    $file = $request->file('video');
+    
+    if ($file) {
+        $fileName = time() . "." . $file->getClientOriginalExtension();
+        $file->storeAs('public/videos', $fileName);
+        $video->video = '/storage/videos/' . $fileName;
+    }
+
+    $video->save();
+
+    return response()->json([
+        'message' => 'Vidéo publiée avec succès'
+    ]);
+}
+
 
     /**
      * Store a newly created resource in storage.
@@ -132,14 +133,7 @@ class CategoriesController extends Controller
     public function update(CategoriesRequest $request, string $id)
     {
         $user = auth()->user();
-       
         $categorie = Categories::findorFail($id);
-        if ($user->id !== optional($categorie->user)->id) {
-            return response()->json([
-                'status_code' => 403,
-                'error' => 'Vous n\'êtes pas autorisé à modifier cette catégorie.',
-            ], 403);
-        }
         $categorie->nom = $request->nom;
         if ($categorie->save()) {
             return response()->json([
@@ -164,15 +158,7 @@ class CategoriesController extends Controller
                 'error' => 'Vous devez être connecté pour effectuer cette action.',
             ], 401);
         }
-        if ($user->id !== $categories->user_id) {
-            return response()->json([
-                'status_code' => 403,
-                'error' => 'Vous n\'êtes pas autorisé à supprimer cette catégorie.',
-            ], 403);
-        }
-    
         $categories->delete();
-    
         return response()->json(['message' => 'Catégorie supprimée avec succès', 'categories' => $categories]);
     }
     
@@ -192,4 +178,12 @@ class CategoriesController extends Controller
        return response()->json(['message' => 'Video supprimée avec succès', 'video' => $video]);
     }
 
+
+    public function listCategorie()
+    {
+        $user= Auth::user();
+        $categories = Categories::all();
+        return response()->json(['categories' => $categories]);
+    }
+    
 }

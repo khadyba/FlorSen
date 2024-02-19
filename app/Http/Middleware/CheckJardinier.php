@@ -17,7 +17,7 @@ class CheckJardinier
     {
         if (auth()->check()) {
             $user = auth()->user();
-            if (!$user->role === 'jardinier') {
+            if (!$user->role_id	 === 3) {
                 return response()->json([
                     'status_code' => 401,
                     'error' => 'Vous devez être connecté en tant que jardinier pour effectuer cette action.',

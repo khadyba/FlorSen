@@ -20,7 +20,7 @@ class ClientSeeder extends Seeder
         $admin->telephone = '773611172';
         $admin->email = 'bak92147@gmail.com';
         $admin->password = bcrypt('12345678');
-        $admin->role = 'clients';
+        $admin->role_id = 3;
         $admin->save();
     }
 }

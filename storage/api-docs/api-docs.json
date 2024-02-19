@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Your API Title",
-        "description": "Your API Description",
+        "title": " API de gestion d'activité de jardinage local dénommé “FLORSEN”",
+        "description": "API Developpé avec laravel",
         "version": "1.0.0"
     },
     "security": [
@@ -151,7 +151,7 @@
                                     "description": {
                                         "type": "string"
                                     },
-                                    "url": {
+                                    "video": {
                                         "type": "string",
                                         "format": "binary"
                                     }
@@ -160,7 +160,7 @@
                             "example": {
                                 "titre": "plantation des carrotte",
                                 "description": "periode fertile fevrier en avril",
-                                "url": {
+                                "video": {
                                     "type": "string",
                                     "format": "binary"
                                 }
@@ -340,7 +340,7 @@
                                     "description": {
                                         "type": "string"
                                     },
-                                    "url": {
+                                    "video": {
                                         "type": "string",
                                         "format": "binary"
                                     }
@@ -349,7 +349,7 @@
                             "example": {
                                 "titre": "planter des carrote",
                                 "description": "les carotte se plante du fevrier jusqu'au moi d'avril !",
-                                "url": {
+                                "video": {
                                     "type": "string",
                                     "format": "binary"
                                 }
@@ -357,6 +357,191 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/SupprimerMessage/{messageId}": {
+            "delete": {
+                "summary": "SupprimerMessage",
+                "description": "",
+                "responses": {
+                    "204": {
+                        "description": "Deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Messageries"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "messageId",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/api/modifierMessage/{messageId}": {
+            "post": {
+                "summary": "ModifierMessage",
+                "description": "",
+                "responses": {
+                    "201": {
+                        "description": "Created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorize",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Messageries"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "messageId",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "contenue": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "contenue": "Jattend votre reponses!"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/RecupererMessage/{envoyeurId}": {
+            "get": {
+                "summary": "Mes Message",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Messageries"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "envoyeurId",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
             }
         },
         "/api/RepondreMessage/{message_id}": {
@@ -504,11 +689,61 @@
                                 }
                             },
                             "example": {
-                                "contenue": "Bonjour je veut vous engager pour un travaille "
+                                "contenue": "Vous avez pas repondue"
                             }
                         }
                     }
                 }
+            }
+        },
+        "/api/listCategorie": {
+            "get": {
+                "summary": "listCategorie",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Categories"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "",
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
             }
         },
         "/api/SupprimerCategorie/{categories}": {
@@ -656,7 +891,7 @@
                                 }
                             },
                             "example": {
-                                "nom": "herbaser"
+                                "nom": "harbustre"
                             }
                         }
                     }
@@ -727,14 +962,14 @@
                                 }
                             },
                             "example": {
-                                "nom": "les Roses"
+                                "nom": "les Margarite"
                             }
                         }
                     }
                 }
             }
         },
-        "/api/Localiserjardiner/3": {
+        "/api/Localiserjardiner/{jardinier}": {
             "post": {
                 "summary": "LocaliserjardinerIP",
                 "description": "",
@@ -840,7 +1075,7 @@
         },
         "/api/LocaliserJardinier/{id}": {
             "post": {
-                "summary": "LocaliserJardinier",
+                "summary": "LocaliserIPJardinier",
                 "description": "",
                 "responses": {
                     "201": {
@@ -992,7 +1227,7 @@
                 ]
             }
         },
-        "http://localhost:9001/api/ListerProduit": {
+        "/api/ListerProduit": {
             "get": {
                 "summary": "ListeProduits",
                 "description": "",
@@ -1799,14 +2034,14 @@
                                     "contenue": {
                                         "type": "string"
                                     },
-                                    "note": {
+                                    "jaime": {
                                         "type": "string"
                                     }
                                 }
                             },
                             "example": {
-                                "contenue": "j'adore vos article!",
-                                "note": ""
+                                "contenue": "on adore !",
+                                "jaime": "1"
                             }
                         }
                     }
@@ -2144,60 +2379,6 @@
                         }
                     }
                 }
-            }
-        },
-        "/api/LocaliserIPJardinier/3": {
-            "post": {
-                "summary": "LocaliserIPJardinier",
-                "description": "",
-                "responses": {
-                    "201": {
-                        "description": "Created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Unauthorize",
-                        "content": {
-                            "application/json": {
-                                "schema": {},
-                                "example": ""
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Newletters"
-                ],
-                "parameters": [
-                    {
-                        "in": "header",
-                        "name": "User-Agent",
-                        "type": "string"
-                    }
-                ]
             }
         },
         "/api/SupprimerNewlettes/{id}": {
@@ -3001,15 +3182,15 @@
                                 }
                             },
                             "example": {
-                                "prenom": "André",
-                                "nom": "Ndione",
+                                "prenom": "Aboubacar",
+                                "nom": "leye",
                                 "image": {
                                     "type": "string",
                                     "format": "binary"
                                 },
-                                "telephone": "781068298",
-                                "adresse": "Bene tally ",
-                                "email": "andredembandione1@gmail.com",
+                                "telephone": "771124528",
+                                "adresse": "Medina",
+                                "email": "aboubacarleye34@gmail.com",
                                 "password": "12345678"
                             }
                         }
@@ -3094,7 +3275,7 @@
                                 }
                             },
                             "example": {
-                                "email": "aboubacarleye34@gmail.com",
+                                "email": "andredembandione1@gmail.com",
                                 "password": "12345678"
                             }
                         }

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Mail\BlockUser;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
 
 
 class UserController extends Controller
@@ -38,7 +42,7 @@ class UserController extends Controller
     public function listJardinier()
     {
         if ($this->authorize('viewAny', User::class)) {
-            $jardiniers = User::where('role', 'jardinier')->get();
+            $jardiniers = User::where('role_id', 2)->get();
 
             return response()->json($jardiniers, 200);
         }  else {
@@ -70,7 +74,7 @@ class UserController extends Controller
  */
     public function listClients()
     {if ($this->authorize('viewAny', User::class)) {
-            $clients = User::where('role', 'clients')->get();
+            $clients = User::where('role_id', 3)->get();
             return response()->json($clients, 200);
         } else {
             return response()->json([
@@ -267,10 +271,10 @@ public function update(Request $request, string $id)
             ], 404);
         }
 
-        if ($user->role === "jardinier" || $user->role === "clients") {
+        if ($user->role_id === 2 || $user->role_id === 3) {
             $user->is_bloquer = 1;
             $user->save();
-
+            Mail::to($user)->send( new BlockUser($user->email));
             return response()->json([
                 "statut" => 1,
                 "Message" => "Utilisateur bloqué avec succès"
@@ -320,7 +324,7 @@ public function debloquerUser(string $id)
     $this->authorize('debloquerUser', User::class);
     $user = User::findOrFail($id);
     
-    if ($user->role === "jardinier" || $user->role === "clients" && $user->is_bloquer === 1) {
+    if ($user->role_id === 2 || $user->role_id === 3  && $user->is_bloquer === 1) {
         $user->is_bloquer = 0;
         $user->save();
 

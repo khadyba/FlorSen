@@ -26,7 +26,7 @@ class VideoRequest extends FormRequest
         return [
             'titre' => 'required|string|max:255',
             'description' => 'required',
-            'url' => 'required'
+            'video' => 'required'
         ];
     }
 
@@ -44,7 +44,7 @@ class VideoRequest extends FormRequest
    {
            return [
                'titre.required' =>'Veuillez mettre un titre!',
-               'url.required'=> 'Le champ video n\'es pas remplie !',
+               'video.required'=> 'Le champ video n\'es pas remplie !',
                'description.required' =>'Le champ description n\'es pas remplie!'
        ];
    }

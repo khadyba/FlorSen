@@ -9,6 +9,7 @@ use App\Models\Produits;
 use App\Models\Commentaire;
 use Illuminate\Http\Request;
 use App\Mail\ProfilConsulter;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -89,7 +90,7 @@ class CommentaireController extends Controller
        try {
         $commentaire = new Commentaire();
         $commentaire->contenue = $request->contenue;
-        $commentaire->note = $request->note;
+        $commentaire->jaime = $request->has('jaime') ? $request->jaime : false;
         $commentaire->article()->associate($article);
         $user = Auth::user();
         $commentaire->user()->associate($user);
@@ -108,22 +109,21 @@ class CommentaireController extends Controller
             'error' => 'Une erreur s\'est produite lors de l\'ajout du commentaire.',
         ], 500);
        }
-       
-       
     }
-    
-
     /**
      * Store a newly created resource in storage.
      */
     public function index($id)
     {
-        $commentaires = Commentaire::where('article_id', $id)->pluck('contenue');
+    $commentaires = Commentaire::where('article_id', $id)
+    ->select('contenue', 'jaime', DB::raw('count(*) as count_jaime'))
+    ->groupBy('contenue', 'jaime')
+    ->get();
+
         return response()->json([
             'commentaires' => $commentaires
         ]);
     }
-
     /**
      * Display the specified resource.
      */
@@ -175,11 +175,7 @@ class CommentaireController extends Controller
                 'error' => 'Une erreur s\'est produite lors du téléchargement',
             ], 500);
         }
-        
-       
     }
-    
-  
 /**
  * @OA\Post(
  *     path="/api/ModifierCommentaire/{article}",
@@ -324,7 +320,7 @@ class CommentaireController extends Controller
     public function destroy(Commentaire $commentaire)
     {
         $user = auth()->user();
-     if ($user->role === 'admin') {
+     if ($user->role_id === 1) {
         $commentaire->delete();
         return response()->json(['message' => 'Commentaire supprimé avec succès', 'commentaire' => $commentaire]);
     }
@@ -352,14 +348,7 @@ class CommentaireController extends Controller
             $response =
             Http::get("https://ipgeolocation.abstractapi.com/v1/?api_key={$apiKey}&ip_address={$ipAddress}");
             $geolocation = $response->json();
-            // dd($geolocation);
             $userLocation = $geolocation['city'] . ', ' . $geolocation['region'] . ', ' . $geolocation['country'];
             return response()->json(['user_location' => $userLocation]);
      }
-
-
-
-
-
-    
 }
