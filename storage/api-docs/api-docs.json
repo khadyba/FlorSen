@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": " API de gestion d'activité de jardinage local dénommé “FLORSEN” ",
-        "description": " API Laravel",
+        "title": "Your API Title",
+        "description": "Your API Description",
         "version": "1.0.0"
     },
     "security": [
@@ -3275,7 +3275,7 @@
                                 }
                             },
                             "example": {
-                                "email": "andredembandione1@gmail.com",
+                                "email": "aboubacarleye34@gmail.com",
                                 "password": "12345678"
                             }
                         }
