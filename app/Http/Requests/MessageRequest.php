@@ -25,7 +25,7 @@ class MessageRequest extends FormRequest
     {
         return [
             'envoyeur_id',
-            'contenue'=>'required',
+            'contenue'=>'required|max:500',
         ];
     }
     public function failedValidation(Validator $validator){
