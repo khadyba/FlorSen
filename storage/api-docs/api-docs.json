@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Your API Title",
-        "description": "Your API Description",
+        "title": " API de gestion d'activité de jardinage local dénommé “FLORSEN”",
+        "description": " API Conçue avec laravel",
         "version": "1.0.0"
     },
     "security": [
@@ -2511,6 +2511,51 @@
                 }
             }
         },
+        "/api/AllUsers": {
+            "get": {
+                "summary": "ListeUsers",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": ""
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "User-Agent",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
         "/api/newpassword/{token}": {
             "get": {
                 "summary": "Nouvellepasswor",
@@ -3190,7 +3235,7 @@
                                 },
                                 "telephone": "771124528",
                                 "adresse": "Medina",
-                                "email": "aboubacarleye34@gmail.com",
+                                "email": "exemple@gmail.com",
                                 "password": "12345678"
                             }
                         }
@@ -3275,7 +3320,7 @@
                                 }
                             },
                             "example": {
-                                "email": "aboubacarleye34@gmail.com",
+                                "email": "andredembandione1@gmail.com",
                                 "password": "12345678"
                             }
                         }
