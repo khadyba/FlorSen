@@ -37,6 +37,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get('listJardinier','listJardinier')->middleware('checkadmin');
     Route::get('listClients','listClients')->middleware('checkadmin');
     Route::post('modifierProfil/{id}', 'update');
+    Route::get('AllUsers', 'listUsers')->middleware('checkadmin');
 });
 
 Route::controller(ArticleController::class)->group(function () {

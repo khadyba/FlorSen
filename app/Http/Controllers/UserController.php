@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Mail\BlockUser;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Notification;
@@ -15,10 +16,15 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
-    }
+    public function listUsers()
+{
+    $users = User::whereIn('role_id', [2, 3])->get();
+    return response()->json([
+        'message' => 'Liste des utilisateurs',
+        'users' => $users
+    ]);
+}
+
  /**
  * @OA\Get(
  *      path="/api/listJardinier",
