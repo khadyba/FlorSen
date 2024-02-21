@@ -44,7 +44,7 @@ class ArticleRequest extends FormRequest
             return [
                 'titre.required' =>'Veuillez mettre un titre!',
                 'image.required'=> 'Le champ image n\'es pas remplie !',
-                'contenue.required' =>'Le champ contenue n\'es pas remplie!'   
+                'contenue.required' =>'Le champ contenue n\'es pas remplie!'
         ];
 
     }

@@ -26,11 +26,22 @@ class MessageriesController extends Controller
                 'message' => 'Vous ne pouvez pas voir les messages que vous n\'avez pas envoyés'
             ]);
         }
-        $messagesEnvoyes = Message::where('envoyeur_id', $envoyeurId)->get();
+        $messages = Message::select('messages.*', 'users_envoyeur.prenom as envoyeur_prenom',
+                                    'users_receveur.prenom as receveur_prenom')
+                        ->join('users as users_envoyeur', 'messages.envoyeur_id', '=', 'users_envoyeur.id')
+                        ->join('users as users_receveur', 'messages.receveur_id', '=', 'users_receveur.id')
+                        ->where(function ($query) use ($envoyeurId) {
+                            $query->where('envoyeur_id', $envoyeurId)
+                                  ->orWhere('receveur_id', $envoyeurId);
+                        })
+                        ->orderBy('created_at', 'asc')
+                        ->get();
         return response()->json([
-            'la liste des messages que vous avez envoyés' => $messagesEnvoyes
+            'message' => $messages
         ]);
     }
+    
+
     
     public function modifierMessage(Message $messageId)
 {

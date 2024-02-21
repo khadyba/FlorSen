@@ -24,7 +24,7 @@ class CategoriesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom'=>'required',
+            'nom'=>'required|max:50|alpha',
         ];
     }
     public function failedValidation(Validator $validator){

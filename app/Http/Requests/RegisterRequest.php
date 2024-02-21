@@ -24,8 +24,8 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-                    'prenom'=>'required',
-                    'nom'=>'required',
+                    'prenom' => 'required|alpha',
+                    'nom' => 'required|alpha',
                     'adresse'=>'required',
                     'telephone' => [
                           'required',
@@ -57,6 +57,8 @@ class RegisterRequest extends FormRequest
                             'telephone.required'=> 'Veuiller mettre un numéro de telephone valide',
                             'telephone.regex'=> 'Veuiller mettre un numéro de telephone valide',
                             'prenom.required' =>'Veuillez renseignée votre prenom',
+                            'prenom.alpha' =>'Le prenom ne doit pas  contenir des chiffre ni des caracteres speciaux',
+                            'nom.alpha' =>'Le nom ne doit pas contenir des chiffre ni des caracteres speciaux',
                             'nom.required' =>'Veillez renseignée votre nom',
                             'email.required' =>'une adresse  email doit etre fournie',
                             'email.unique' =>'l\adresse email existe déjat',

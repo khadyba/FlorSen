@@ -26,7 +26,7 @@ class LoginRequest extends FormRequest
   {
       return [
                'email'=>'required|email',
-            //    'email'=>'required|email|exists:users,email',
+               'email'=>'required|email|exists:users,email',
                'password'=>'required',
       ];
   }
@@ -43,10 +43,10 @@ public function messages()
 {
            return [
                'email.required' =>'une adresse  email doit etre fournie!',
-            //    'email.exists'=> 'Cette adresses email n\'existe pas !',
+               'email.exists'=> 'Cette adresses email n\'existe pas !',
                'email.email' =>'Adresse  email non valide!',
                'password.required' =>'mot de passe non fournis!',
-               'password.email'=>'email ou mot de passe non valide!'
+            
               
      ];
 }

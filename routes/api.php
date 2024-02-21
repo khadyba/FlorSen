@@ -37,6 +37,7 @@ Route::controller(UserController::class)->group(function () {
     Route::get('listJardinier','listJardinier')->middleware('checkadmin');
     Route::get('listClients','listClients')->middleware('checkadmin');
     Route::post('modifierProfil/{id}', 'update');
+    Route::get('AllUsers', 'listUsers')->middleware('checkadmin');
 });
 
 Route::controller(ArticleController::class)->group(function () {
@@ -101,7 +102,7 @@ Route::middleware(['is_jardinier'])->group(function () {
         Route::get('listCategorie','listCategorie')->middleware(['is_jardinier','checkadmin']);
     });
 
-
+    Route::middleware(['is_connecte'])->group(function () {
 Route::controller(MessageriesController::class)->group(function (){
     Route::post('EnvoyerMessage/{id}', 'sendMessage');
     Route::post('RepondreMessage/{message_id}', 'repondreMessage');
@@ -110,3 +111,4 @@ Route::controller(MessageriesController::class)->group(function (){
     Route::delete('SupprimerMessage/{messageId}', 'supprimerMessage');
 
 });
+ });
