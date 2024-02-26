@@ -92,7 +92,7 @@ class User extends  Authenticatable implements JWTSubject
         public function isAdmin()
     {
         
-        return $this->role_id	 === 1;
+        return $this->role_id === 1;
     }
 
   public function UserAll()
@@ -100,7 +100,10 @@ class User extends  Authenticatable implements JWTSubject
      return $this->role_id	 === [1,2,3];
   }
 
-
+   public function User()
+   {
+    return  $this->role_id === [1,2];
+   }
 
   public function produits()
   {

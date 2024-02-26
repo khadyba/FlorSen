@@ -99,7 +99,7 @@ Route::middleware(['is_jardinier'])->group(function () {
         Route::get('DetailVideo/{id}','show');
         Route::post('RemplacerVideo/{id}','modifier')->middleware('is_jardinier');
         Route::delete('supprimerVideo/{id}','effacer')->middleware(['is_jardinier','checkadmin']);
-        Route::get('listCategorie','listCategorie')->middleware(['is_jardinier','checkadmin']);
+        Route::get('listCategorie','listCategorie')->middleware(['is_jardinier']);
     });
 
     Route::middleware(['is_connecte'])->group(function () {
