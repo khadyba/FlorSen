@@ -28,10 +28,10 @@ class RegisterRequest extends FormRequest
                     'nom' => 'required|alpha',
                     'adresse'=>'required',
                     'telephone' => [
-                          'required',
-                          'regex:/(77|78|75|33)\d{3}\d{2}\d{2}/',
-
-                     ],
+                        'required',
+                        'regex:/(77|78|75|33)\d{3}\d{2}\d{2}/',
+                        'unique:users,telephone'
+                    ],
                     'email'=>'required|unique:users,email',
                     'password'=>'required|max:12|min:8',
                     'role_id'
@@ -55,7 +55,8 @@ class RegisterRequest extends FormRequest
                     return [
                             'adresse.required' =>'Veuillez renseignée votre adresse',
                             'telephone.required'=> 'Veuiller mettre un numéro de telephone valide',
-                            'telephone.regex'=> 'Veuiller mettre un numéro de telephone valide',
+                            'telephone.regex'=> 'Veuiller mettre un numéro sous le format 77/78/75/33',
+                            'telephone.unique'=> 'Ce numero de telephone existe déjà',
                             'prenom.required' =>'Veuillez renseignée votre prenom',
                             'prenom.alpha' =>'Le prenom ne doit pas  contenir des chiffre ni des caracteres speciaux',
                             'nom.alpha' =>'Le nom ne doit pas contenir des chiffre ni des caracteres speciaux',
