@@ -98,10 +98,16 @@ Route::middleware(['is_jardinier'])->group(function () {
         Route::get('recupererVideo','index');
         Route::get('DetailVideo/{id}','show');
         Route::post('RemplacerVideo/{id}','modifier')->middleware('is_jardinier');
-        Route::delete('supprimerVideo/{id}','effacer')->middleware(['is_jardinier','checkadmin']);
-        Route::get('listCategorie','listCategorie')->middleware(['is_jardinier']);
+       
+       
     });
-
+    Route::middleware(['adminjardiner'])->group(function (){
+        Route::controller(CategoriesController::class)->group(function(){
+            Route::get('listCategorie','listCategorie');
+            Route::delete('supprimerVideo/{id}','effacer');
+           });
+    });
+  
     Route::middleware(['is_connecte'])->group(function () {
 Route::controller(MessageriesController::class)->group(function (){
     Route::post('EnvoyerMessage/{id}', 'sendMessage');

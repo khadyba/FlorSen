@@ -14,11 +14,11 @@ class AdminSeeder extends Seeder
     public function run()
     {
         $admin = new User();
-        $admin->prenom = 'Admin';
-        $admin->nom = 'Admin';
-        $admin->adresse = 'Adresse Admin';
-        $admin->telephone = '77-124-44-10';
-        $admin->email = 'andredembandione1@gmail.com';
+        $admin->prenom = 'Abdoulay';
+        $admin->nom = 'Korse Diallo';
+        $admin->adresse = 'Mermoz';
+        $admin->telephone = '771124528';
+        $admin->email = 'abdoulayekorsediallo@gmail.com';
         $admin->password = bcrypt('12345678');
         $admin->role_id = 1;
         $admin->save();

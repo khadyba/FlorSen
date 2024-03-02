@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'checkadmin'=>\App\Http\Middleware\CheckAdmin::class ,
         'is_connecte'=>\App\Http\Middleware\CheckConnect::class ,
         'is_jardinier'=>\App\Http\Middleware\CheckJardinier::class ,
+        'adminjardiner'=>\App\Http\Middleware\AdmimJardiner::class ,
 
         
     ];

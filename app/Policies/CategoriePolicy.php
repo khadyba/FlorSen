@@ -18,8 +18,9 @@ class CategoriePolicy
     }
     public function viewAny(Categories $categories): Response
     {
-        return $categories->User()?
-        Response::allow(): Response::deny('Vous n\'êtes pas autorisé à
+        return $categories->isAdmin()?
+        Response::allow():
+        Response::deny('Vous n\'êtes pas autorisé à
                                            effectuer cette action!');
       
     }

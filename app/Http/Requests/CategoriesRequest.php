@@ -41,6 +41,8 @@ class CategoriesRequest extends FormRequest
    {
            return [
                'nom.required' =>'Le champ nom doit etre remplis!',
+               'nom.max' =>'Le champ nom ne doit pas depasser 50 caractères!',
+               'nom.alpha' =>'Le champ nom ne doit contenir que des lettres!'
               
        ];
 

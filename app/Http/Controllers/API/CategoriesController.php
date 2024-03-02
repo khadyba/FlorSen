@@ -181,7 +181,7 @@ class CategoriesController extends Controller
 
     public function listCategorie()
     {
-        $this->authorize('listerCategorie', Categories::class);
+        // $this->authorize('listCategorie', Categories::class);
         $user= Auth::user();
         $categories = Categories::all();
         return response()->json(['categories' => $categories]);
